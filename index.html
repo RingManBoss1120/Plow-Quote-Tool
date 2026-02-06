@@ -146,7 +146,21 @@ function calc(){
     total = sideCost;
   }
 
-  totalBox.innerHTML = "Total: $" + total.toFixed(2);
+  drivePriceEl.textContent = "$" + driveCost.toFixed(2);
+sidePriceEl.textContent  = "$" + sideCost.toFixed(2);
+totalBox.textContent     = "$" + total.toFixed(2);
+
+// Show/hide lines based on service
+if(service === "both"){
+  driveLine.style.display = "flex";
+  sideLine.style.display  = "flex";
+} else if(service === "driveway"){
+  driveLine.style.display = "flex";
+  sideLine.style.display  = "none";
+} else {
+  driveLine.style.display = "none";
+  sideLine.style.display  = "flex";
+}
 }
 
 const driveMinutes = document.getElementById("driveMinutes");
