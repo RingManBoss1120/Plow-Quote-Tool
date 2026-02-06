@@ -1,7 +1,7 @@
 {
   "name": "MN Plowing Quote",
   "short_name": "MN Quote",
-  "start_url": "./MN_Plowing_Quick_Quote_iPhone_v3.html",
+  "start_url": "./"
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#111111",
