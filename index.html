@@ -168,7 +168,10 @@ const driveRateInput = document.getElementById("driveRate");
 const sideMinutes = document.getElementById("sideMinutes");
 const sideRateSelect = document.getElementById("sideRate");
 const serviceSelect = document.getElementById("service");
-const totalBox = document.getElementById("total");
+const driveLine = document.getElementById("driveLine");
+const sideLine = document.getElementById("sideLine");
+const drivePriceEl = document.getElementById("drivePrice");
+const sidePriceEl = document.getElementById("sidePrice");
 
 document.querySelectorAll("input, select").forEach(el=>{
   el.addEventListener("input", calc);
