@@ -102,9 +102,26 @@ input, select{
 </select>
 </div>
 
-<!-- TOTAL -->
-<div class="card total" id="total">
-Total: $0.00
+<!-- PRICES -->
+<div class="card">
+  <div style="font-size:18px;font-weight:700;margin-bottom:8px;">Pricing</div>
+
+  <div id="driveLine" style="display:flex;justify-content:space-between;font-size:18px;padding:6px 0;">
+    <span>Driveway</span>
+    <span id="drivePrice">$0.00</span>
+  </div>
+
+  <div id="sideLine" style="display:flex;justify-content:space-between;font-size:18px;padding:6px 0;">
+    <span>Sidewalk</span>
+    <span id="sidePrice">$0.00</span>
+  </div>
+
+  <div style="height:1px;background:#e6e6e6;margin:10px 0;"></div>
+
+  <div style="display:flex;justify-content:space-between;font-size:22px;font-weight:800;">
+    <span>Total</span>
+    <span id="total">$0.00</span>
+  </div>
 </div>
 
 <script>
