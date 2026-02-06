@@ -25,32 +25,27 @@
 <body>
 
 <div class="card">
-  <div class="row">
-    <label>Customer Name</label>
-    <input id="custName" placeholder="ex: John Smith">
-  </div>
-
-  <div class="row">
-    <label>Service Address</label>
-    <input id="custAddr" list="addrList" placeholder="ex: 123 Main St, Duluth">
-    <datalist id="addrList"></datalist>
-  </div>
-
-  <div class="row">
-    <label>Zone / Cluster</label>
-    <input id="zone" placeholder="ex: Lakeside / Route 3">
-  </div>
-
-  <div class="row">
-    <label>Service</label>
-    <select id="service">
-      <option value="plow">Driveway only</option>
-      <option value="sidewalk">Sidewalk only</option>
-      <option value="plow_sw">Driveway + Sidewalk</option>
-    </select>
-  </div>
+  <label>Customer Name</label>
+  <input id="custName" placeholder="ex: John Smith">
 </div>
 
+<div class="card">
+  <label>Service Address</label>
+  <input id="custAddr" list="addrList" placeholder="ex: 123 Main St, Duluth">
+  <datalist id="addrList"></datalist>
+</div>
+
+<div class="card">
+  <label>Zone / Cluster</label>
+  <input id="zone">
+
+  <label style="margin-top:10px;">Service</label>
+  <select id="service">
+    <option value="plow">Driveway only</option>
+    <option value="sidewalk">Sidewalk only</option>
+    <option value="plow_sw">Driveway + Sidewalk</option>
+  </select>
+</div>
 <div class="card">
   <div class="row">
     <label><b>Driveway minutes</b></label>
