@@ -9,33 +9,87 @@
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 
 <style>
-  body{font-family:system-ui,-apple-system,BlinkMacSystemFont; background:#f4f6f8; margin:0; padding:12px;}
-  .card{background:#fff;border-radius:14px;padding:14px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-  .row{margin-bottom:10px}
-  label{font-weight:600; display:block; margin-bottom:6px}
-  input,select,textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #ccc;font-size:16px}
-  button{padding:12px 16px;border-radius:12px;border:0;background:#111;color:#fff;font-weight:700;font-size:16px; width:100%; margin-top:10px}
-  button.ghost{background:#eee;color:#111}
-  .muted{color:#666;font-size:13px}
-  .btnRow{display:flex; gap:10px; flex-wrap:wrap}
-  .btnRow button{width:auto; flex:1}
+body{
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+  background:#f4f6f8;
+  margin:0;
+  padding:12px;
+}
+
+.card{
+  background:#fff;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:14px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06)
+}
+
+label{
+  font-weight:600;
+  display:block;
+  margin-bottom:6px
+}
+
+input,select,textarea{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  font-size:16px
+}
+
+button{
+  padding:12px;
+  border-radius:12px;
+  border:0;
+  background:#111;
+  color:#fff;
+  font-weight:700;
+  font-size:16px;
+  width:100%;
+  margin-top:8px
+}
+
+button.ghost{
+  background:#eee;
+  color:#111
+}
+
+.btnRow{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap
+}
+
+.btnRow button{
+  flex:1
+}
+
+.muted{
+  color:#666;
+  font-size:13px
+}
 </style>
 </head>
 
+<body>
+
+<!-- LOGO HEADER -->
 <div class="card" style="text-align:center;">
-  <img src="icons/icon-512.png" 
-       alt="MN Plowing Logo" 
-       style="max-width:220px; width:60%; height:auto;">
+  <img src="MN%20Plowing%20Logo%20no%20back.png"
+       alt="MN Plowing Logo"
+       style="max-width:340px;width:100%;height:auto;">
 </div>
 
+<!-- CUSTOMER -->
 <div class="card">
   <label>Customer Name</label>
-  <input id="custName" placeholder="ex: John Smith">
+  <input id="custName" placeholder="John Smith">
 </div>
 
 <div class="card">
   <label>Service Address</label>
-  <input id="custAddr" list="addrList" placeholder="ex: 123 Main St, Duluth">
+  <input id="custAddr" list="addrList" placeholder="123 Main St, Duluth">
   <datalist id="addrList"></datalist>
 </div>
 
@@ -50,53 +104,48 @@
     <option value="plow_sw">Driveway + Sidewalk</option>
   </select>
 </div>
+
+<!-- DRIVEWAY -->
 <div class="card">
-  <div class="row">
-    <label><b>Driveway minutes</b></label>
-    <input id="drvMin" type="number" inputmode="decimal" placeholder="ex: 4" step="0.1">
-  </div>
+  <label>Driveway Minutes</label>
+  <input id="drvMin" type="number" step="0.1">
 
-  <div class="row">
-    <label>Driveway Target $ / hour</label>
-    <input id="targetHr" type="number" inputmode="decimal" step="0.01" value="400.00">
-    <div class="muted">This drives your $/minute rate automatically.</div>
-  </div>
+  <label style="margin-top:10px;">Target $ / Hour</label>
+  <input id="targetHr" value="400">
 
-  <div class="row">
-    <label>Minimum driveway charge</label>
-    <input id="minDrv" type="number" inputmode="decimal" step="0.01" value="35.00">
-  </div>
+  <label style="margin-top:10px;">Minimum Driveway Charge</label>
+  <input id="minDrv" value="35">
 </div>
 
+<!-- SIDEWALK -->
 <div class="card">
-  <div class="row">
-    <label>Sidewalk minutes</label>
-    <input id="swMin" type="number" inputmode="decimal" step="0.1" value="0">
-  </div>
+  <label>Sidewalk Minutes</label>
+  <input id="swMin" value="0">
 
-  <div class="row">
-  <label>Sidewalk $ per minute</label>
-<select id="swRate">
-  <option value="4" selected>$4 / min</option>
-  <option value="5">$5 / min</option>
-  <option value="6">$6 / min</option>
-  <option value="7">$7 / min</option>
-  <option value="8">$8 / min</option>
-</select> 
-  </div>
+  <label style="margin-top:10px;">Sidewalk $ per minute</label>
+  <select id="swRate">
+    <option value="4" selected>$4 / min</option>
+    <option value="5">$5 / min</option>
+    <option value="6">$6 / min</option>
+    <option value="7">$7 / min</option>
+    <option value="8">$8 / min</option>
+  </select>
 </div>
 
+<!-- TOTALS -->
 <div class="card">
-  <div>Driveway: <b id="drvOut">$0</b></div>
-  <div>Sidewalk: <b id="swOut">$0</b></div>
-  <div style="margin-top:6px;">Total: <b id="totOut">$0</b></div>
+  <div>Driveway: <b id="drvOut">$0.00</b></div>
+  <div>Sidewalk: <b id="swOut">$0.00</b></div>
+  <div style="margin-top:6px;">Total: <b id="totOut">$0.00</b></div>
 </div>
 
+<!-- NOTES -->
 <div class="card">
   <label>Notes</label>
-  <textarea id="notes" placeholder="ex: corner lot, tight turn, call on arrival"></textarea>
+  <textarea id="notes"></textarea>
 </div>
 
+<!-- ACTIONS -->
 <div class="card">
   <div class="btnRow">
     <button id="copyBtn">Copy Quote</button>
@@ -104,225 +153,142 @@
   </div>
 </div>
 
+<!-- SAVED -->
 <div class="card">
   <b>Saved Quotes</b>
-  <div class="muted" style="margin-top:6px;">Stored on this phone only.</div>
   <div class="btnRow" style="margin-top:10px;">
-    <button id="saveQuoteBtn">Save this quote</button>
-    <button id="exportQuotesBtn" class="ghost">Export CSV</button>
-    <button id="clearQuotesBtn" class="ghost">Clear saved</button>
+    <button id="saveBtn">Save Quote</button>
+    <button id="exportBtn" class="ghost">Export CSV</button>
+    <button id="clearSavedBtn" class="ghost">Clear Saved</button>
   </div>
-  <div id="savedQuotesList" style="margin-top:10px;"></div>
+  <div id="savedList" style="margin-top:10px;"></div>
 </div>
 
 <script>
 function money(n){
-  const x = Math.round((Number(n) || 0));
-  return "$" + x.toLocaleString();
+  return new Intl.NumberFormat("en-US",{
+    style:"currency",
+    currency:"USD"
+  }).format(n||0);
 }
 
-const FIELDS = ["custName","custAddr","zone","service","drvMin","targetHr","minDrv","swMin","swRate","notes"];
-const CUR = "mn_quote_current_v5";
-const SAVED = "mn_quote_saved_v5";
-
-function loadCurrent(){
-  const s = JSON.parse(localStorage.getItem(CUR) || "{}");
-  FIELDS.forEach(id=>{
-    const el = document.getElementById(id);
-    if(!el) return;
-    if(s[id] !== undefined) el.value = s[id];
-  });
-}
-
-function saveCurrent(){
-  const s = {};
-  FIELDS.forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) s[id] = el.value;
-  });
-  localStorage.setItem(CUR, JSON.stringify(s));
-}
-
-function getSaved(){
-  return JSON.parse(localStorage.getItem(SAVED) || "[]");
-}
-function setSaved(arr){
-  localStorage.setItem(SAVED, JSON.stringify(arr));
-}
+const fields=["custName","custAddr","zone","service","drvMin","targetHr","minDrv","swMin","swRate","notes"];
+const SAVED="mn_quotes_v1";
 
 function calc(){
-  const targetHr = parseFloat(document.getElementById("targetHr").value || "400");
-  const perMin = targetHr / 60.0;
+  let perMin=document.getElementById("targetHr").value/60;
+  let drvMin=+drvMinEl().value||0;
+  let minDrv=+minDrvEl().value||0;
 
-  const drvMin = parseFloat(document.getElementById("drvMin").value || "0");
-  const minDrv = parseFloat(document.getElementById("minDrv").value || "0");
+  let drv=drvMin*perMin;
+  if(drvMin>0) drv=Math.max(drv,minDrv);
 
-  let drv = drvMin * perMin;
-  if(drvMin > 0) drv = Math.max(drv, minDrv);
+  let sw= (+swMinEl().value||0) * (+swRateEl().value||0);
 
-  const swMin = parseFloat(document.getElementById("swMin").value || "0");
-  const swRate = parseFloat(document.getElementById("swRate").value || "4");
-  const sw = swMin * swRate;
+  drvOut.textContent=money(drv);
+  swOut.textContent=money(sw);
 
-  document.getElementById("drvOut").textContent = money(drv);
-  document.getElementById("swOut").textContent = money(sw);
+  let s=service.value;
+  let tot=(s==="plow")?drv:(s==="sidewalk")?sw:drv+sw;
 
-  const service = document.getElementById("service").value;
-  const tot = (service === "plow") ? drv : (service === "sidewalk") ? sw : (drv + sw);
-  document.getElementById("totOut").textContent = money(tot);
+  totOut.textContent=money(tot);
 
-  saveCurrent();
-  return {drv, sw, tot};
+  return {drv,sw,tot};
 }
+
+function drvMinEl(){return document.getElementById("drvMin")}
+function minDrvEl(){return document.getElementById("minDrv")}
+function swMinEl(){return document.getElementById("swMin")}
+function swRateEl(){return document.getElementById("swRate")}
+
+function getSaved(){return JSON.parse(localStorage.getItem(SAVED)||"[]")}
+function setSaved(a){localStorage.setItem(SAVED,JSON.stringify(a))}
 
 function renderSaved(){
-  const box = document.getElementById("savedQuotesList");
-  const arr = getSaved().slice().reverse();
-
-  // Address autocomplete list
-  const uniqAddr = [...new Set(arr.map(q => (q.custAddr || "").trim()).filter(Boolean))];
-  document.getElementById("addrList").innerHTML = uniqAddr.map(a => `<option value="${a.replace(/"/g,'&quot;')}"></option>`).join("");
-
-  if(!arr.length){
-    box.innerHTML = "<div class='muted'>No saved quotes yet.</div>";
-    return;
-  }
-
-  box.innerHTML = arr.slice(0,50).map((q,i)=>`
-    <div style="border:1px solid #eee; border-radius:12px; padding:10px; margin-bottom:10px;">
-      <div style="font-weight:700;">${escapeHtml(q.custName || "(no name)")} — ${escapeHtml(q.custAddr || "(no address)")}</div>
-      <div class="muted" style="margin-top:4px;">
-        Total: <b>${money(q.tot)}</b>
-      </div>
-      <div class="btnRow" style="margin-top:8px;">
-        <button class="ghost" onclick="loadQ(${i})">Load</button>
-        <button class="ghost" onclick="delQ(${i})">Delete</button>
-      </div>
+  let a=getSaved().reverse();
+  savedList.innerHTML=a.length?a.map((q,i)=>`
+  <div class="card">
+    <b>${q.custName}</b><br>
+    ${q.custAddr}<br>
+    Total: ${money(q.tot)}<br>
+    <div class="btnRow">
+      <button class="ghost" onclick="loadQ(${i})">Load</button>
+      <button class="ghost" onclick="delQ(${i})">Delete</button>
     </div>
-  `).join("");
+  </div>`).join(""):"<div class='muted'>No saved quotes</div>";
+
+  addrList.innerHTML=[...new Set(a.map(q=>q.custAddr))].map(x=>`<option value="${x}">`).join("");
 }
 
-function escapeHtml(s){
-  return String(s || "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-function saveQ(){
-  const custAddr = (document.getElementById("custAddr").value || "").trim();
-  if(!custAddr){ alert("Enter the service address first."); return; }
-
-  const {drv, sw, tot} = calc();
-  const q = {};
-  FIELDS.forEach(id => q[id] = document.getElementById(id).value);
-  q.drv = drv; q.sw = sw; q.tot = tot;
-  q.ts = Date.now();
-
-  const all = getSaved();
-  all.push(q);
-  setSaved(all);
+function saveQuote(){
+  if(!custAddr.value){alert("Enter address");return;}
+  let {drv,sw,tot}=calc();
+  let q={};
+  fields.forEach(f=>q[f]=document.getElementById(f).value);
+  q.drv=drv; q.sw=sw; q.tot=tot;
+  setSaved([...getSaved(),q]);
   renderSaved();
-  alert("Saved.");
 }
 
 function loadQ(i){
-  const arr = getSaved().slice().reverse();
-  const q = arr[i];
-  if(!q) return;
-  FIELDS.forEach(id=>{
-    if(q[id] !== undefined) document.getElementById(id).value = q[id];
-  });
+  let q=getSaved().reverse()[i];
+  fields.forEach(f=>document.getElementById(f).value=q[f]);
   calc();
-  alert("Loaded.");
 }
 
 function delQ(i){
-  const arr = getSaved().slice().reverse();
-  arr.splice(i,1);
-  setSaved(arr.slice().reverse());
+  let a=getSaved().reverse();
+  a.splice(i,1);
+  setSaved(a.reverse());
   renderSaved();
 }
 
 function exportCSV(){
-  const arr = getSaved();
-  if(!arr.length){ alert("No saved quotes to export."); return; }
-
-  const headers = ["Timestamp","Customer Name","Service Address","Zone/Cluster","Service","Driveway Minutes","Target $/hr","Min Driveway Charge","Sidewalk Minutes","Sidewalk $/min","Driveway Quote","Sidewalk Quote","Total","Notes"];
-  const rows = arr.map(q => [
-    new Date(q.ts || Date.now()).toISOString(),
-    q.custName || "",
-    q.custAddr || "",
-    q.zone || "",
-    q.service || "",
-    q.drvMin || "",
-    q.targetHr || "",
-    q.minDrv || "",
-    q.swMin || "",
-    q.swRate || "",
-    Math.round(q.drv || 0),
-    Math.round(q.sw || 0),
-    Math.round(q.tot || 0),
-    (q.notes || "").replace(/\r?\n/g," ")
-  ]);
-
-  const csv = [headers, ...rows]
-    .map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(","))
-    .join("\n");
-
-  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "mn_plowing_saved_quotes.csv";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  let a=getSaved();
+  let csv="Customer,Address,Total\n"+a.map(q=>`${q.custName},${q.custAddr},${q.tot}`).join("\n");
+  let b=new Blob([csv]);
+  let u=URL.createObjectURL(b);
+  let l=document.createElement("a");
+  l.href=u;l.download="quotes.csv";l.click();
 }
 
-function clearSaved(){
-  if(!confirm("Clear ALL saved quotes on this phone?")) return;
-  localStorage.removeItem(SAVED);
-  renderSaved();
-}
-
-document.querySelectorAll("input,select,textarea").forEach(el=>{
-  el.addEventListener("input", calc);
-  el.addEventListener("change", calc);
+document.querySelectorAll("input,select,textarea").forEach(x=>{
+  x.oninput=calc;
+  x.onchange=calc;
 });
 
-document.getElementById("copyBtn").addEventListener("click", async ()=>{
-  const {tot} = calc();
-  const txt =
-`MN Plowing – Quote
-Customer: ${document.getElementById("custName").value}
-Address: ${document.getElementById("custAddr").value}
-Driveway: ${document.getElementById("drvOut").textContent}
-Sidewalk: ${document.getElementById("swOut").textContent}
-Total per event: ${document.getElementById("totOut").textContent}
-Notes: ${document.getElementById("notes").value}`;
+copyBtn.onclick=()=>{
+  let t=calc();
+  navigator.clipboard.writeText(
+`MN Plowing Quote
+Customer: ${custName.value}
+Address: ${custAddr.value}
+Driveway: ${drvOut.textContent}
+Sidewalk: ${swOut.textContent}
+Total: ${totOut.textContent}
+Notes: ${notes.value}`
+  );
+  alert("Copied");
+};
 
-  try{
-    await navigator.clipboard.writeText(txt);
-    alert("Copied.");
-  }catch(e){
-    alert("Copy blocked. Tap and hold to copy from Notes if needed.");
-  }
-});
-
-document.getElementById("clearBtn").addEventListener("click", ()=>{
-  // keep your defaults (400, minDrv 35, swRate dropdown default 4)
-  ["custName","custAddr","zone","drvMin","swMin","notes"].forEach(id=>document.getElementById(id).value="");
-  document.getElementById("service").value="plow";
-  document.getElementById("targetHr").value="400.00";
-  document.getElementById("minDrv").value="35.00";
-  document.getElementById("swRate").value="4";
+clearBtn.onclick=()=>{
+  custName.value="";
+  custAddr.value="";
+  zone.value="";
+  drvMin.value="";
+  swMin.value="0";
+  notes.value="";
+  targetHr.value="400";
+  minDrv.value="35";
+  swRate.value="4";
+  service.value="plow";
   calc();
-});
+};
 
-document.getElementById("saveQuoteBtn").addEventListener("click", saveQ);
-document.getElementById("exportQuotesBtn").addEventListener("click", exportCSV);
-document.getElementById("clearQuotesBtn").addEventListener("click", clearSaved);
+saveBtn.onclick=saveQuote;
+exportBtn.onclick=exportCSV;
+clearSavedBtn.onclick=()=>{localStorage.removeItem(SAVED);renderSaved();};
 
-loadCurrent();
 calc();
 renderSaved();
 </script>
