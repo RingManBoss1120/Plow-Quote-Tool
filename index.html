@@ -120,7 +120,7 @@ input, select{
 
   <div style="display:flex;justify-content:space-between;font-size:22px;font-weight:800;">
     <span>Total</span>
-    <span id="total">$0.00</span>
+<span id="totalAmount">$0.00</span>
   </div>
 </div>
 
@@ -172,10 +172,12 @@ const driveLine = document.getElementById("driveLine");
 const sideLine = document.getElementById("sideLine");
 const drivePriceEl = document.getElementById("drivePrice");
 const sidePriceEl = document.getElementById("sidePrice");
-
+const totalBox = document.getElementById("totalAmount");
+  
 document.querySelectorAll("input, select").forEach(el=>{
   el.addEventListener("input", calc);
 });
+  calc();
 </script>
 
 </body>
