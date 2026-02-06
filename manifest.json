@@ -1,7 +1,7 @@
 {
   "name": "MN Plowing Quote",
   "short_name": "MN Quote",
-  "start_url": "./"
+  "start_url": "/Plow-Quote-Tool/"
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#111111",
