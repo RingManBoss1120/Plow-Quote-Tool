@@ -1,226 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MN Plowing Quote Tool</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MN Plowing Quote Tool</title>
 
-  <link rel="icon" href="icons/icon-192-v2.png">
-  <link rel="apple-touch-icon" href="icons/icon-180-v2.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180-v2.png">
+<link rel="icon" href="icons/icon-192-v2.png">
+<link rel="apple-touch-icon" href="icons/icon-180-v2.png">
 
-  <style>
-    *{ box-sizing:border-box; }
+<style>
+*{box-sizing:border-box;}
 
-    body{
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      background:#f2f4f7;
-      margin:0;
-      padding:20px;
-    }
+body{
+  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+  background:#f2f4f7;
+  margin:0;
+  padding:20px;
+}
 
-    .card{
-      background:#fff;
-      border-radius:16px;
-      padding:18px;
-      margin-bottom:16px;
-      box-shadow:0 2px 6px rgba(0,0,0,.08);
-    }
+.card{
+  background:#fff;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:16px;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
 
-    label{
-      font-weight:600;
-      display:block;
-      margin-bottom:6px;
-    }
+label{
+  font-weight:600;
+  display:block;
+  margin-bottom:6px;
+}
 
-    input, select{
-      width:100%;
-      padding:12px;
-      font-size:16px;
-      border-radius:10px;
-      border:1px solid #ccc;
-      background:#fff;
-    }
+input,select,button{
+  width:100%;
+  padding:12px;
+  font-size:16px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  margin-bottom:10px;
+}
 
-    .sectionTitle{
-      font-size:18px;
-      font-weight:700;
-      margin-bottom:8px;
-    }
+button{
+  background:#1f5fbf;
+  color:#fff;
+  border:none;
+  font-weight:700;
+}
 
-    .lineRow{
-      display:flex;
-      justify-content:space-between;
-      font-size:18px;
-      padding:6px 0;
-    }
+button.secondary{
+  background:#888;
+}
 
-    .divider{
-      height:1px;
-      background:#e6e6e6;
-      margin:10px 0;
-    }
+.row{
+  display:flex;
+  justify-content:space-between;
+  font-size:18px;
+  padding:6px 0;
+}
 
-    .totalRow{
-      display:flex;
-      justify-content:space-between;
-      font-size:22px;
-      font-weight:800;
-    }
-  </style>
+.totalRow{
+  font-size:22px;
+  font-weight:800;
+  display:flex;
+  justify-content:space-between;
+}
+
+.divider{
+  height:1px;
+  background:#e6e6e6;
+  margin:10px 0;
+}
+</style>
 </head>
 
 <body>
 
-  <!-- LOGO HEADER -->
-  <div class="card" style="text-align:center;padding:8px;">
-    <img src="MN%20Plowing%20Logo%20no%20back.png"
-         alt="MN Plowing"
-         style="max-width:320px;width:100%;height:auto;display:block;margin:auto;">
-  </div>
+<!-- LOGO -->
+<div class="card" style="text-align:center;padding:8px;">
+<img src="MN%20Plowing%20Logo%20no%20back.png" style="max-width:320px;width:100%;">
+</div>
 
-  <!-- CUSTOMER INFO (does NOT affect pricing) -->
-  <div class="card">
-    <label>Customer Name</label>
-    <input id="customer" placeholder="ex: John Smith">
+<!-- CUSTOMER -->
+<div class="card">
+<label>Customer Name</label>
+<input id="customer">
 
-    <label style="margin-top:12px;">Service Address</label>
-    <input id="address" placeholder="ex: 123 Main St, Duluth">
-  </div>
+<label>Service Address</label>
+<input id="address">
+</div>
 
-  <!-- SERVICE TYPE -->
-  <div class="card">
-    <label>Service</label>
-    <select id="service">
-      <option value="both">Driveway + Sidewalk</option>
-      <option value="driveway">Driveway Only</option>
-      <option value="sidewalk">Sidewalk Only</option>
-    </select>
-  </div>
+<!-- SERVICE -->
+<div class="card">
+<label>Service</label>
+<select id="service">
+<option value="both">Driveway + Sidewalk</option>
+<option value="driveway">Driveway Only</option>
+<option value="sidewalk">Sidewalk Only</option>
+</select>
+</div>
 
-  <!-- DRIVEWAY -->
-  <div class="card">
-    <label>Driveway Minutes</label>
-    <input id="driveMinutes" type="number" inputmode="decimal" step="0.1" placeholder="ex: 4">
+<!-- DRIVEWAY -->
+<div class="card">
+<label>Driveway Minutes</label>
+<input id="driveMinutes" type="number">
 
-    <label style="margin-top:12px;">Driveway Target $ / Hour</label>
-    <input id="driveRate" type="number" inputmode="decimal" step="1" value="400">
-  </div>
+<label>Driveway $ / Hour</label>
+<input id="driveRate" type="number" value="400">
+</div>
 
-  <!-- SIDEWALK -->
-  <div class="card">
-    <label>Sidewalk Minutes</label>
-    <input id="sideMinutes" type="number" inputmode="decimal" step="0.1" placeholder="ex: 10">
+<!-- SIDEWALK -->
+<div class="card">
+<label>Sidewalk Minutes</label>
+<input id="sideMinutes" type="number">
 
-    <label style="margin-top:12px;">Sidewalk $ Per Minute</label>
-    <select id="sideRate">
-      <option value="4">$4 / min</option>
-      <option value="5">$5 / min</option>
-      <option value="6">$6 / min</option>
-      <option value="7">$7 / min</option>
-      <option value="8">$8 / min</option>
-    </select>
-  </div>
+<label>Sidewalk $ / Minute</label>
+<select id="sideRate">
+<option value="4">$4</option>
+<option value="5">$5</option>
+<option value="6">$6</option>
+<option value="7">$7</option>
+<option value="8">$8</option>
+</select>
+</div>
 
-  <!-- PRICES -->
-  <div class="card">
-    <div class="sectionTitle">Pricing</div>
+<!-- PRICING -->
+<div class="card">
+<div class="row" id="driveLine">
+<span>Driveway</span>
+<span id="drivePrice">$0.00</span>
+</div>
 
-    <div id="driveLine" class="lineRow">
-      <span>Driveway</span>
-      <span id="drivePrice">$0.00</span>
-    </div>
+<div class="row" id="sideLine">
+<span>Sidewalk</span>
+<span id="sidePrice">$0.00</span>
+</div>
 
-    <div id="sideLine" class="lineRow">
-      <span>Sidewalk</span>
-      <span id="sidePrice">$0.00</span>
-    </div>
+<div class="divider"></div>
 
-    <div class="divider"></div>
+<div class="totalRow">
+<span>Total</span>
+<span id="totalAmount">$0.00</span>
+</div>
+</div>
 
-    <div class="totalRow">
-      <span>Total</span>
-      <span id="totalAmount">$0.00</span>
-    </div>
-  </div>
+<!-- BUTTONS -->
+<div class="card">
+<button onclick="copyQuote()">Copy / Send Quote</button>
+<button onclick="saveQuote()">Save Quote</button>
+<button class="secondary" onclick="clearAll()">Clear</button>
+</div>
 
-  <script>
-    // --- helpers ---
-    function num(el, fallback=0){
-      const v = parseFloat(el.value);
-      return Number.isFinite(v) ? v : fallback;
-    }
+<script>
+const service = document.getElementById("service");
+const driveMinutes = document.getElementById("driveMinutes");
+const driveRate = document.getElementById("driveRate");
+const sideMinutes = document.getElementById("sideMinutes");
+const sideRate = document.getElementById("sideRate");
 
-    function money(n){
-      return new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }).format(Number.isFinite(n) ? n : 0);
-    }
+const driveLine = document.getElementById("driveLine");
+const sideLine = document.getElementById("sideLine");
+const drivePrice = document.getElementById("drivePrice");
+const sidePrice = document.getElementById("sidePrice");
+const totalAmount = document.getElementById("totalAmount");
 
-    // --- elements ---
-    const serviceSelect   = document.getElementById("service");
-    const driveMinutesEl  = document.getElementById("driveMinutes");
-    const driveRateEl     = document.getElementById("driveRate");
-    const sideMinutesEl   = document.getElementById("sideMinutes");
-    const sideRateEl      = document.getElementById("sideRate");
+const customer = document.getElementById("customer");
+const address = document.getElementById("address");
 
-    const driveLine       = document.getElementById("driveLine");
-    const sideLine        = document.getElementById("sideLine");
-    const drivePriceEl    = document.getElementById("drivePrice");
-    const sidePriceEl     = document.getElementById("sidePrice");
-    const totalAmountEl   = document.getElementById("totalAmount");
+function money(n){
+  return "$" + (n || 0).toFixed(2);
+}
 
-    // --- calc ---
-    function calc(){
-      const driveMin  = num(driveMinutesEl, 0);
-      const driveRate = num(driveRateEl, 400);
-      const sideMin   = num(sideMinutesEl, 0);
-      const sideRate  = num(sideRateEl, 0);
+function calc(){
+  const dMin = Number(driveMinutes.value||0);
+  const dRate = Number(driveRate.value||400);
+  const sMin = Number(sideMinutes.value||0);
+  const sRate = Number(sideRate.value||0);
 
-      const driveCost = (driveRate / 60) * driveMin;
-      const sideCost  = sideMin * sideRate;
+  const dCost = (dRate/60)*dMin;
+  const sCost = sMin*sRate;
 
-      const service = serviceSelect.value;
+  let total = 0;
 
-      let total = 0;
-      if(service === "both"){
-        total = driveCost + sideCost;
-      } else if(service === "driveway"){
-        total = driveCost;
-      } else {
-        total = sideCost;
-      }
+  if(service.value==="both"){
+    total = dCost+sCost;
+    driveLine.style.display="flex";
+    sideLine.style.display="flex";
+  }
+  if(service.value==="driveway"){
+    total = dCost;
+    driveLine.style.display="flex";
+    sideLine.style.display="none";
+  }
+  if(service.value==="sidewalk"){
+    total = sCost;
+    driveLine.style.display="none";
+    sideLine.style.display="flex";
+  }
 
-      // update numbers
-      drivePriceEl.textContent  = money(driveCost);
-      sidePriceEl.textContent   = money(sideCost);
-      totalAmountEl.textContent = money(total);
+  drivePrice.textContent = money(dCost);
+  sidePrice.textContent = money(sCost);
+  totalAmount.textContent = money(total);
+}
 
-      // show/hide lines
-      if(service === "both"){
-        driveLine.style.display = "flex";
-        sideLine.style.display  = "flex";
-      } else if(service === "driveway"){
-        driveLine.style.display = "flex";
-        sideLine.style.display  = "none";
-      } else {
-        driveLine.style.display = "none";
-        sideLine.style.display  = "flex";
-      }
-    }
+[service,driveMinutes,driveRate,sideMinutes,sideRate].forEach(el=>{
+  el.addEventListener("input",calc);
+  el.addEventListener("change",calc);
+});
 
-    // Only pricing fields trigger calc (customer/address do NOT)
-    const pricingFields = [serviceSelect, driveMinutesEl, driveRateEl, sideMinutesEl, sideRateEl];
-    pricingFields.forEach(el=>{
-      el.addEventListener("input", calc);
-      el.addEventListener("change", calc);
-    });
+function clearAll(){
+  customer.value="";
+  address.value="";
+  driveMinutes.value="";
+  sideMinutes.value="";
+  calc();
+}
 
-    calc(); // run once on load
-  </script>
+function copyQuote(){
+  const text =
+`MN Plowing Quote
+
+Customer: ${customer.value}
+Address: ${address.value}
+
+Driveway: ${drivePrice.textContent}
+Sidewalk: ${sidePrice.textContent}
+Total: ${totalAmount.textContent}`;
+
+  navigator.clipboard.writeText(text);
+  alert("Quote copied! Paste into text or email.");
+}
+
+function saveQuote(){
+  const quotes = JSON.parse(localStorage.getItem("quotes")||"[]");
+
+  quotes.push({
+    customer: customer.value,
+    address: address.value,
+    driveway: drivePrice.textContent,
+    sidewalk: sidePrice.textContent,
+    total: totalAmount.textContent,
+    date: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("quotes",JSON.stringify(quotes));
+  alert("Quote saved!");
+}
+
+calc();
+</script>
 
 </body>
 </html>
