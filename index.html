@@ -1,184 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MN Plowing Quote Tool</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MN Plowing Quote Tool</title>
 
-<link rel="icon" href="icons/icon-192-v2.png">
-<link rel="apple-touch-icon" href="icons/icon-180-v2.png">
-<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180-v2.png">
+  <link rel="icon" href="icons/icon-192-v2.png">
+  <link rel="apple-touch-icon" href="icons/icon-180-v2.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180-v2.png">
 
-<style>
-body{
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  background:#f2f4f7;
-  margin:0;
-  padding:20px;
-}
+  <style>
+    *{ box-sizing:border-box; }
 
-.card{
-  background:#fff;
-  border-radius:16px;
-  padding:18px;
-  margin-bottom:16px;
-  box-shadow:0 2px 6px rgba(0,0,0,.08);
-}
+    body{
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background:#f2f4f7;
+      margin:0;
+      padding:20px;
+    }
 
-h2{
-  margin:0 0 10px;
-}
+    .card{
+      background:#fff;
+      border-radius:16px;
+      padding:18px;
+      margin-bottom:16px;
+      box-shadow:0 2px 6px rgba(0,0,0,.08);
+    }
 
-label{
-  font-weight:600;
-  display:block;
-  margin-bottom:6px;
-}
+    label{
+      font-weight:600;
+      display:block;
+      margin-bottom:6px;
+    }
 
-input, select{
-  width:100%;
-  padding:12px;
-  font-size:16px;
-  border-radius:10px;
-  border:1px solid #ccc;
-}
+    input, select{
+      width:100%;
+      padding:12px;
+      font-size:16px;
+      border-radius:10px;
+      border:1px solid #ccc;
+      background:#fff;
+    }
 
-.total{
-  font-size:22px;
-  font-weight:700;
-  text-align:center;
-}
-</style>
+    .sectionTitle{
+      font-size:18px;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .lineRow{
+      display:flex;
+      justify-content:space-between;
+      font-size:18px;
+      padding:6px 0;
+    }
+
+    .divider{
+      height:1px;
+      background:#e6e6e6;
+      margin:10px 0;
+    }
+
+    .totalRow{
+      display:flex;
+      justify-content:space-between;
+      font-size:22px;
+      font-weight:800;
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- LOGO HEADER -->
-<div class="card" style="text-align:center;padding:8px;">
-  <img src="MN%20Plowing%20Logo%20no%20back.png"
-     style="max-width:320px;width:100%;height:auto;display:block;margin:auto;">
-</div>
-
-<!-- CUSTOMER INFO -->
-<div class="card">
-<label>Customer Name</label>
-<input id="customer" placeholder="ex: John Smith">
-
-<label style="margin-top:12px;">Service Address</label>
-<input id="address" placeholder="ex: 123 Main St, Duluth">
-</div>
-
-<!-- SERVICE TYPE -->
-<div class="card">
-<label>Service</label>
-<select id="service">
-  <option value="both">Driveway + Sidewalk</option>
-  <option value="driveway">Driveway Only</option>
-  <option value="sidewalk">Sidewalk Only</option>
-</select>
-</div>
-
-<!-- DRIVEWAY -->
-<div class="card">
-<label>Driveway Minutes</label>
-<input id="driveMinutes" type="number" placeholder="ex: 4">
-
-<label style="margin-top:12px;">Driveway Target $ / Hour</label>
-<input id="driveRate" type="number" value="400">
-</div>
-
-<!-- SIDEWALK -->
-<div class="card">
-<label>Sidewalk Minutes</label>
-<input id="sideMinutes" type="number" placeholder="ex: 10">
-
-<label style="margin-top:12px;">Sidewalk $ Per Minute</label>
-<select id="sideRate">
-  <option value="4">$4 / min</option>
-  <option value="5">$5 / min</option>
-  <option value="6">$6 / min</option>
-  <option value="7">$7 / min</option>
-  <option value="8">$8 / min</option>
-</select>
-</div>
-
-<!-- PRICES -->
-<div class="card">
-  <div style="font-size:18px;font-weight:700;margin-bottom:8px;">Pricing</div>
-
-  <div id="driveLine" style="display:flex;justify-content:space-between;font-size:18px;padding:6px 0;">
-    <span>Driveway</span>
-    <span id="drivePrice">$0.00</span>
+  <!-- LOGO HEADER -->
+  <div class="card" style="text-align:center;padding:8px;">
+    <img src="MN%20Plowing%20Logo%20no%20back.png"
+         alt="MN Plowing"
+         style="max-width:320px;width:100%;height:auto;display:block;margin:auto;">
   </div>
 
-  <div id="sideLine" style="display:flex;justify-content:space-between;font-size:18px;padding:6px 0;">
-    <span>Sidewalk</span>
-    <span id="sidePrice">$0.00</span>
+  <!-- CUSTOMER INFO (does NOT affect pricing) -->
+  <div class="card">
+    <label>Customer Name</label>
+    <input id="customer" placeholder="ex: John Smith">
+
+    <label style="margin-top:12px;">Service Address</label>
+    <input id="address" placeholder="ex: 123 Main St, Duluth">
   </div>
 
-  <div style="height:1px;background:#e6e6e6;margin:10px 0;"></div>
-
-  <div style="display:flex;justify-content:space-between;font-size:22px;font-weight:800;">
-    <span>Total</span>
-<span id="totalAmount">$0.00</span>
+  <!-- SERVICE TYPE -->
+  <div class="card">
+    <label>Service</label>
+    <select id="service">
+      <option value="both">Driveway + Sidewalk</option>
+      <option value="driveway">Driveway Only</option>
+      <option value="sidewalk">Sidewalk Only</option>
+    </select>
   </div>
-</div>
 
-<script>
-function calc(){
-  let driveMin = Number(driveMinutes.value || 0);
-  let driveRate = Number(driveRateInput.value || 400);
-  let sideMin = Number(sideMinutes.value || 0);
-  let sideRate = Number(sideRateSelect.value || 0);
+  <!-- DRIVEWAY -->
+  <div class="card">
+    <label>Driveway Minutes</label>
+    <input id="driveMinutes" type="number" inputmode="decimal" step="0.1" placeholder="ex: 4">
 
-  let driveCost = (driveRate / 60) * driveMin;
-  let sideCost = sideMin * sideRate;
+    <label style="margin-top:12px;">Driveway Target $ / Hour</label>
+    <input id="driveRate" type="number" inputmode="decimal" step="1" value="400">
+  </div>
 
-  let service = serviceSelect.value;
+  <!-- SIDEWALK -->
+  <div class="card">
+    <label>Sidewalk Minutes</label>
+    <input id="sideMinutes" type="number" inputmode="decimal" step="0.1" placeholder="ex: 10">
 
-  let total = 0;
+    <label style="margin-top:12px;">Sidewalk $ Per Minute</label>
+    <select id="sideRate">
+      <option value="4">$4 / min</option>
+      <option value="5">$5 / min</option>
+      <option value="6">$6 / min</option>
+      <option value="7">$7 / min</option>
+      <option value="8">$8 / min</option>
+    </select>
+  </div>
 
-  if(service === "both"){
-    total = driveCost + sideCost;
-  } else if(service === "driveway"){
-    total = driveCost;
-  } else {
-    total = sideCost;
-  }
+  <!-- PRICES -->
+  <div class="card">
+    <div class="sectionTitle">Pricing</div>
 
-  drivePriceEl.textContent = "$" + driveCost.toFixed(2);
-sidePriceEl.textContent  = "$" + sideCost.toFixed(2);
-totalBox.textContent     = "$" + total.toFixed(2);
+    <div id="driveLine" class="lineRow">
+      <span>Driveway</span>
+      <span id="drivePrice">$0.00</span>
+    </div>
 
-// Show/hide lines based on service
-if(service === "both"){
-  driveLine.style.display = "flex";
-  sideLine.style.display  = "flex";
-} else if(service === "driveway"){
-  driveLine.style.display = "flex";
-  sideLine.style.display  = "none";
-} else {
-  driveLine.style.display = "none";
-  sideLine.style.display  = "flex";
-}
-}
+    <div id="sideLine" class="lineRow">
+      <span>Sidewalk</span>
+      <span id="sidePrice">$0.00</span>
+    </div>
 
-const driveMinutes = document.getElementById("driveMinutes");
-const driveRateInput = document.getElementById("driveRate");
-const sideMinutes = document.getElementById("sideMinutes");
-const sideRateSelect = document.getElementById("sideRate");
-const serviceSelect = document.getElementById("service");
-const driveLine = document.getElementById("driveLine");
-const sideLine = document.getElementById("sideLine");
-const drivePriceEl = document.getElementById("drivePrice");
-const sidePriceEl = document.getElementById("sidePrice");
-const totalBox = document.getElementById("totalAmount");
-  
-document.querySelectorAll("input, select").forEach(el=>{
-  el.addEventListener("input", calc);
-});
-  calc();
-</script>
+    <div class="divider"></div>
+
+    <div class="totalRow">
+      <span>Total</span>
+      <span id="totalAmount">$0.00</span>
+    </div>
+  </div>
+
+  <script>
+    // --- helpers ---
+    function num(el, fallback=0){
+      const v = parseFloat(el.value);
+      return Number.isFinite(v) ? v : fallback;
+    }
+
+    function money(n){
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(Number.isFinite(n) ? n : 0);
+    }
+
+    // --- elements ---
+    const serviceSelect   = document.getElementById("service");
+    const driveMinutesEl  = document.getElementById("driveMinutes");
+    const driveRateEl     = document.getElementById("driveRate");
+    const sideMinutesEl   = document.getElementById("sideMinutes");
+    const sideRateEl      = document.getElementById("sideRate");
+
+    const driveLine       = document.getElementById("driveLine");
+    const sideLine        = document.getElementById("sideLine");
+    const drivePriceEl    = document.getElementById("drivePrice");
+    const sidePriceEl     = document.getElementById("sidePrice");
+    const totalAmountEl   = document.getElementById("totalAmount");
+
+    // --- calc ---
+    function calc(){
+      const driveMin  = num(driveMinutesEl, 0);
+      const driveRate = num(driveRateEl, 400);
+      const sideMin   = num(sideMinutesEl, 0);
+      const sideRate  = num(sideRateEl, 0);
+
+      const driveCost = (driveRate / 60) * driveMin;
+      const sideCost  = sideMin * sideRate;
+
+      const service = serviceSelect.value;
+
+      let total = 0;
+      if(service === "both"){
+        total = driveCost + sideCost;
+      } else if(service === "driveway"){
+        total = driveCost;
+      } else {
+        total = sideCost;
+      }
+
+      // update numbers
+      drivePriceEl.textContent  = money(driveCost);
+      sidePriceEl.textContent   = money(sideCost);
+      totalAmountEl.textContent = money(total);
+
+      // show/hide lines
+      if(service === "both"){
+        driveLine.style.display = "flex";
+        sideLine.style.display  = "flex";
+      } else if(service === "driveway"){
+        driveLine.style.display = "flex";
+        sideLine.style.display  = "none";
+      } else {
+        driveLine.style.display = "none";
+        sideLine.style.display  = "flex";
+      }
+    }
+
+    // Only pricing fields trigger calc (customer/address do NOT)
+    const pricingFields = [serviceSelect, driveMinutesEl, driveRateEl, sideMinutesEl, sideRateEl];
+    pricingFields.forEach(el=>{
+      el.addEventListener("input", calc);
+      el.addEventListener("change", calc);
+    });
+
+    calc(); // run once on load
+  </script>
 
 </body>
 </html>
