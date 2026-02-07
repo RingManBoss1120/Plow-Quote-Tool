@@ -78,77 +78,89 @@ button.secondary{
 
 <!-- LOGO -->
 <div class="card" style="text-align:center;padding:8px;">
-<img src="MN%20Plowing%20Logo%20no%20back.png" style="max-width:320px;width:100%;">
+  <img src="MN%20Plowing%20Logo%20no%20back.png" style="max-width:320px;width:100%;">
 </div>
 
 <!-- CUSTOMER -->
 <div class="card">
-<label>Customer Name</label>
-<input id="customer">
+  <label>Customer Last Name</label>
+  <input id="lastName" autocomplete="family-name">
 
-<label>Service Address</label>
-<input id="address">
+  <label>Customer First Name</label>
+  <input id="firstName" autocomplete="given-name">
+
+  <label>Service Street Address</label>
+  <input id="street" autocomplete="street-address">
+
+  <label>City</label>
+  <input id="city" autocomplete="address-level2">
+
+  <label>State</label>
+  <input id="state" autocomplete="address-level1">
+
+  <label>Zip Code</label>
+  <input id="zip" inputmode="numeric" autocomplete="postal-code">
 </div>
 
 <!-- SERVICE -->
 <div class="card">
-<label>Service</label>
-<select id="service">
-<option value="both">Driveway + Sidewalk</option>
-<option value="driveway">Driveway Only</option>
-<option value="sidewalk">Sidewalk Only</option>
-</select>
+  <label>Service</label>
+  <select id="service">
+    <option value="both">Driveway + Sidewalk</option>
+    <option value="driveway">Driveway Only</option>
+    <option value="sidewalk">Sidewalk Only</option>
+  </select>
 </div>
 
 <!-- DRIVEWAY -->
 <div class="card">
-<label>Driveway Minutes</label>
-<input id="driveMinutes" type="number">
+  <label>Driveway Minutes</label>
+  <input id="driveMinutes" type="number">
 
-<label>Driveway $ / Hour</label>
-<input id="driveRate" type="number" value="400">
+  <label>Driveway $ / Hour</label>
+  <input id="driveRate" type="number" value="400">
 </div>
 
 <!-- SIDEWALK -->
 <div class="card">
-<label>Sidewalk Minutes</label>
-<input id="sideMinutes" type="number">
+  <label>Sidewalk Minutes</label>
+  <input id="sideMinutes" type="number">
 
-<label>Sidewalk $ / Minute</label>
-<select id="sideRate">
-<option value="4">$4</option>
-<option value="5">$5</option>
-<option value="6">$6</option>
-<option value="7">$7</option>
-<option value="8">$8</option>
-</select>
+  <label>Sidewalk $ / Minute</label>
+  <select id="sideRate">
+    <option value="4">$4</option>
+    <option value="5">$5</option>
+    <option value="6">$6</option>
+    <option value="7">$7</option>
+    <option value="8">$8</option>
+  </select>
 </div>
 
 <!-- PRICING -->
 <div class="card">
-<div class="row" id="driveLine">
-<span>Driveway</span>
-<span id="drivePrice">$0.00</span>
-</div>
+  <div class="row" id="driveLine">
+    <span>Driveway</span>
+    <span id="drivePrice">$0.00</span>
+  </div>
 
-<div class="row" id="sideLine">
-<span>Sidewalk</span>
-<span id="sidePrice">$0.00</span>
-</div>
+  <div class="row" id="sideLine">
+    <span>Sidewalk</span>
+    <span id="sidePrice">$0.00</span>
+  </div>
 
-<div class="divider"></div>
+  <div class="divider"></div>
 
-<div class="totalRow">
-<span>Total</span>
-<span id="totalAmount">$0.00</span>
-</div>
+  <div class="totalRow">
+    <span>Total</span>
+    <span id="totalAmount">$0.00</span>
+  </div>
 </div>
 
 <!-- BUTTONS -->
 <div class="card">
-<button onclick="copyQuote()">Copy / Send Quote</button>
-<button onclick="saveQuote()">Save Quote</button>
-<button class="secondary" onclick="clearAll()">Clear</button>
+  <button onclick="copyQuote()">Copy / Send Quote</button>
+  <button onclick="saveQuote()">Save Quote</button>
+  <button class="secondary" onclick="clearAll()">Clear</button>
 </div>
 
 <script>
@@ -164,8 +176,13 @@ const drivePrice = document.getElementById("drivePrice");
 const sidePrice = document.getElementById("sidePrice");
 const totalAmount = document.getElementById("totalAmount");
 
-const customer = document.getElementById("customer");
-const address = document.getElementById("address");
+// New customer/address fields
+const lastName = document.getElementById("lastName");
+const firstName = document.getElementById("firstName");
+const street = document.getElementById("street");
+const city = document.getElementById("city");
+const state = document.getElementById("state");
+const zip = document.getElementById("zip");
 
 function money(n){
   return "$" + (n || 0).toFixed(2);
@@ -209,19 +226,43 @@ function calc(){
 });
 
 function clearAll(){
-  customer.value="";
-  address.value="";
+  lastName.value="";
+  firstName.value="";
+  street.value="";
+  city.value="";
+  state.value="";
+  zip.value="";
   driveMinutes.value="";
   sideMinutes.value="";
   calc();
+}
+
+function formatCustomer(){
+  const ln = (lastName.value || "").trim();
+  const fn = (firstName.value || "").trim();
+  if(!ln && !fn) return "";
+  if(ln && fn) return `${ln}, ${fn}`;
+  return ln || fn;
+}
+
+function formatAddress(){
+  const st = (street.value || "").trim();
+  const c = (city.value || "").trim();
+  const s = (state.value || "").trim();
+  const z = (zip.value || "").trim();
+
+  const line1 = st;
+  const line2 = [c, s].filter(Boolean).join(", ") + (z ? ` ${z}` : "");
+  return [line1, line2].filter(Boolean).join("\n");
 }
 
 function copyQuote(){
   const text =
 `MN Plowing Quote
 
-Customer: ${customer.value}
-Address: ${address.value}
+Customer: ${formatCustomer()}
+Address:
+${formatAddress()}
 
 Driveway: ${drivePrice.textContent}
 Sidewalk: ${sidePrice.textContent}
@@ -235,8 +276,13 @@ function saveQuote(){
   const quotes = JSON.parse(localStorage.getItem("quotes")||"[]");
 
   quotes.push({
-    customer: customer.value,
-    address: address.value,
+    lastName: (lastName.value || "").trim(),
+    firstName: (firstName.value || "").trim(),
+    street: (street.value || "").trim(),
+    city: (city.value || "").trim(),
+    state: (state.value || "").trim(),
+    zip: (zip.value || "").trim(),
+    service: service.value,
     driveway: drivePrice.textContent,
     sidewalk: sidePrice.textContent,
     total: totalAmount.textContent,
