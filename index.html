@@ -236,7 +236,12 @@ function clearAll(){
   lastName.value = "";
   firstName.value = "";
   customerEmail.value = "";
+
+  // Clear phone (Safari sometimes auto-refills; this prevents it)
   customerPhone.value = "";
+  customerPhone.blur();
+  setTimeout(() => { customerPhone.value = ""; }, 0);
+
   street.value = "";
   city.value = "";
   state.value = "";
