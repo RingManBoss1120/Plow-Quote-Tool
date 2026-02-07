@@ -277,26 +277,7 @@ Total: ${totalAmount.textContent}`;
   window.location.href = mailto;
 }
 
-function saveQuote(){
-  const quotes = JSON.parse(localStorage.getItem("quotes")||"[]");
 
-  quotes.push({
-    lastName: (lastName.value || "").trim(),
-    firstName: (firstName.value || "").trim(),
-    street: (street.value || "").trim(),
-    city: (city.value || "").trim(),
-    state: (state.value || "").trim(),
-    zip: (zip.value || "").trim(),
-    service: service.value,
-    driveway: drivePrice.textContent,
-    sidewalk: sidePrice.textContent,
-    total: totalAmount.textContent,
-    date: new Date().toLocaleString()
-  });
-
-  localStorage.setItem("quotes",JSON.stringify(quotes));
-  alert("Quote saved!");
-}
 
 calc();
 </script>
