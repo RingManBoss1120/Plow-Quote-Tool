@@ -89,6 +89,12 @@ button.secondary{
   <label>Customer First Name</label>
   <input id="firstName" autocomplete="given-name">
 
+  <label>Customer Email</label>
+<input id="customerEmail" type="email" autocomplete="email">
+
+<label>Customer Phone</label>
+<input id="customerPhone" type="tel" autocomplete="tel">
+  
   <label>Service Street Address</label>
   <input id="street" autocomplete="street-address">
 
@@ -178,6 +184,8 @@ const totalAmount = document.getElementById("totalAmount");
 // New customer/address fields
 const lastName = document.getElementById("lastName");
 const firstName = document.getElementById("firstName");
+const customerEmail = document.getElementById("customerEmail");
+const customerPhone = document.getElementById("customerPhone");
 const street = document.getElementById("street");
 const city = document.getElementById("city");
 const state = document.getElementById("state");
@@ -262,6 +270,9 @@ function emailQuote(){
 `MN Plowing Quote
 
 Customer: ${formatCustomer()}
+Email: ${customerEmail.value || "—"}
+Phone: ${customerPhone.value || "—"}
+
 Address:
 ${formatAddress()}
 
