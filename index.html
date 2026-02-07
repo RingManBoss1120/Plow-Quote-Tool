@@ -255,8 +255,10 @@ function formatAddress(){
   return [line1, line2].filter(Boolean).join("\n");
 }
 
-function copyQuote(){
-  const text =
+function emailQuote(){
+  const subject = `MN Plowing Quote – ${formatCustomer()}`;
+
+  const body =
 `MN Plowing Quote
 
 Customer: ${formatCustomer()}
@@ -267,8 +269,12 @@ Driveway: ${drivePrice.textContent}
 Sidewalk: ${sidePrice.textContent}
 Total: ${totalAmount.textContent}`;
 
-  navigator.clipboard.writeText(text);
-  alert("Quote copied! Paste into text or email.");
+  const mailto =
+    "mailto:info@mnplowing.com" +
+    "?subject=" + encodeURIComponent(subject) +
+    "&body=" + encodeURIComponent(body);
+
+  window.location.href = mailto;
 }
 
 function saveQuote(){
