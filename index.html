@@ -288,6 +288,9 @@ Phone: ${customerPhone.value || "—"}
 Address:
 ${formatAddress()}
 
+Notes:
+${(notes.value || "").trim() || "—"}
+
 Driveway: ${drivePrice.textContent}
 Sidewalk: ${sidePrice.textContent}
 Total: ${totalAmount.textContent}`;
