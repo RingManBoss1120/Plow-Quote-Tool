@@ -159,18 +159,19 @@ button.secondary{
 .tagline{
   margin-top:10px;
   font-weight:950;
-  letter-spacing:2px;
-  font-size:28px;
   text-transform:uppercase;
   color:rgba(234,242,255,.95);
   text-shadow:0 0 22px rgba(43,123,255,.22);
 
-  display:block;
-  max-width:100%;
+  /* keep it on ONE line, but make it auto-fit phones */
   white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  padding: 0 10px;
+  padding:0 10px;
+  max-width:100%;
+
+  /* this is the real fix: responsive sizing so it fits */
+  font-size:clamp(18px, 4.8vw, 28px);
+  letter-spacing:clamp(.5px, .8vw, 2px);
+  line-height:1.1;
 }
 </style>
 </head>
