@@ -485,7 +485,7 @@ ${(notes.value || "").trim() || "—"}
 
 Driveway: ${drivePrice.textContent}
 Sidewalk: ${sidePrice.textContent}
-Salting: ${(saltAmount.value || "").trim() || "N/A"}
+Salting: ${formatDollarOrNA(saltAmount.value)}
 Total: ${totalAmount.textContent}`;
 
   const mailto =
