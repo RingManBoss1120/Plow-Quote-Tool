@@ -398,7 +398,7 @@ The Blizzard Busters
 
 MN Plowing Quote
 Customer: ${formatCustomer()}
-Business: ${businessName.value || "N/A"}
+Business: ${(businessName.value || "").trim() || "N/A"}
 Email: ${customerEmail.value || "—"}
 Phone: ${customerPhone.value || "—"}
 
