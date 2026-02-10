@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MN Plowing Quote Tool</title>
 
-<link rel="icon" href="icons/icon-192-v2.png">
-<link rel="apple-touch-icon" href="icons/icon-180-v2.png">
+<link rel="icon" href="icons/icon-192-v2.png" />
+<link rel="apple-touch-icon" href="icons/icon-180-v2.png" />
 
 <style>
 *{box-sizing:border-box;}
@@ -34,10 +34,7 @@ body{
     linear-gradient(180deg, var(--bg1), var(--bg0));
 }
 
-.wrap{
-  max-width:760px;
-  margin:0 auto;
-}
+.wrap{ max-width:760px; margin:0 auto; }
 
 .sectionTitle{
   margin:20px 6px 10px;
@@ -68,9 +65,7 @@ body{
     gap:18px;
   }
 }
-.customerGrid .span2{
-  grid-column: 1 / -1;
-}
+.customerGrid .span2{ grid-column: 1 / -1; }
 
 .card{
   border-radius:20px;
@@ -115,14 +110,9 @@ input,select,textarea{
   color:var(--text);
 }
 
-input::placeholder,
-textarea::placeholder{
-  color:rgba(234,242,255,.45);
-}
+input::placeholder, textarea::placeholder{ color:rgba(234,242,255,.45); }
 
-input:focus,
-select:focus,
-textarea:focus{
+input:focus, select:focus, textarea:focus{
   outline:none;
   border-color:rgba(43,123,255,.85);
   box-shadow:0 0 0 3px rgba(43,123,255,.22);
@@ -192,9 +182,7 @@ button.success{
   gap:12px;
 }
 @media (min-width: 720px){
-  .actionsGrid{
-    grid-template-columns: 1fr 1fr 1fr;
-  }
+  .actionsGrid{ grid-template-columns: 1fr 1fr 1fr; }
 }
 
 .row{
@@ -247,7 +235,7 @@ button.success{
   line-height:1.1;
 }
 
-/* MOBILE: tighten the logo header so sections sit higher */
+/* MOBILE */
 @media (max-width: 520px){
   body{ padding:14px; }
   .logoCard{ padding:14px !important; margin-bottom:14px; }
@@ -276,7 +264,6 @@ button.success{
 <div class="sectionTitle">Customer</div>
 <div class="card">
   <div class="customerGrid">
-
     <div>
       <label>Customer Last Name</label>
       <input id="lastName" autocomplete="family-name">
@@ -334,7 +321,6 @@ button.success{
       <label>Notes</label>
       <textarea class="span2" id="notes" rows="4" placeholder="Notes (gate code, special instructions, pricing notes, follow-up, etc.)"></textarea>
     </div>
-
   </div>
 </div>
 
@@ -414,13 +400,8 @@ button.success{
       </div>
     </div>
 
-    <div class="span2">
-      <label>Round Total</label>
-      <select id="roundMode">
-        <option value="none" selected>No rounding</option>
-        <option value="5">Round to nearest $5</option>
-        <option value="10">Round to nearest $10</option>
-      </select>
+    <div class="span2" style="color:rgba(234,242,255,.75); font-weight:800; letter-spacing:.2px;">
+      Manual inputs are rounded to the nearest $5.00 automatically.
     </div>
   </div>
 </div>
@@ -502,7 +483,6 @@ const enforceMinimums = document.getElementById("enforceMinimums");
 const minPlow = document.getElementById("minPlow");
 const minShovel = document.getElementById("minShovel");
 const minSalt = document.getElementById("minSalt");
-const roundMode = document.getElementById("roundMode");
 
 const driveLine = document.getElementById("driveLine");
 const sideLine = document.getElementById("sideLine");
@@ -528,13 +508,12 @@ const notes = document.getElementById("notes");
 const quoteModal = document.getElementById("quoteModal");
 const quoteText = document.getElementById("quoteText");
 const copyQuoteBtn = document.getElementById("copyQuoteBtn");
-  
+
 /* State */
 let lastTotals = {
   dCost: 0,
   sCost: 0,
   saltCost: 0,
-  totalBeforeRounding: 0,
   totalFinal: 0
 };
 
@@ -547,7 +526,6 @@ function money(n){
 function sanitizeCurrency(raw){
   let s = (raw || "").trim();
   if (!s) return "";
-
   if (/^(n\/a|na|none)$/i.test(s)) return "";
 
   s = s.replace(/\s+/g, "").replace(/\$/g, "");
@@ -560,8 +538,24 @@ function sanitizeCurrency(raw){
 
   const n = parseFloat(s);
   if (!Number.isFinite(n)) return "";
-
   return n.toFixed(2);
+}
+
+function roundToNearest5(value){
+  return Math.round(value / 5) * 5;
+}
+
+/* Manual inputs to round (nearest $5): salt + minimum fields
+   NOTE: Sidewalk rate dropdown is already $4-$8 and driveway rate is $/hr, so we don't touch those.
+*/
+function normalizeManualMoneyInput(inputEl){
+  const cleaned = sanitizeCurrency(inputEl.value);
+  if (!cleaned) {
+    inputEl.value = "";
+    return;
+  }
+  const n = parseFloat(cleaned);
+  inputEl.value = roundToNearest5(n).toFixed(2);
 }
 
 function formatCustomer(){
@@ -583,18 +577,6 @@ function formatAddress(){
   return [line1, line2].filter(Boolean).join("\n");
 }
 
-function getRoundingIncrement(){
-  const mode = roundMode.value;
-  if (mode === "5") return 5;
-  if (mode === "10") return 10;
-  return 0;
-}
-
-function roundToIncrement(value, inc){
-  if (!inc) return value;
-  return Math.round(value / inc) * inc;
-}
-
 /* Quote text builders */
 function buildQuoteText(){
   const cust = formatCustomer() || "—";
@@ -608,14 +590,7 @@ function buildQuoteText(){
   if (driveLine.style.display !== "none") lines.push(`Driveway: ${drivePrice.textContent}`);
   if (sideLine.style.display !== "none") lines.push(`Sidewalk: ${sidePrice.textContent}`);
   if (saltLine.style.display !== "none") lines.push(`Salting: ${saltPrice.textContent}`);
-
-  const inc = getRoundingIncrement();
-  if (inc) {
-    lines.push(`Subtotal (calculated): ${money(lastTotals.totalBeforeRounding)}`);
-    lines.push(`Total (rounded): ${money(lastTotals.totalFinal)}`);
-  } else {
-    lines.push(`Total: ${money(lastTotals.totalFinal)}`);
-  }
+  lines.push(`Total: ${money(lastTotals.totalFinal)}`);
 
   return `Quick Quote Provided by
 MN Plowing LLC
@@ -640,32 +615,6 @@ Phone: 218-349-3737
 Email: info@mnplowing.com`;
 }
 
-function buildCustomerQuoteText(){
-  const cust = formatCustomer();
-  const biz = (businessName.value || "").trim() || "N/A";
-  const addr = formatAddress() || "—";
-
-  const lines = [];
-  if (driveLine.style.display !== "none") lines.push(`Driveway: ${drivePrice.textContent}`);
-  if (sideLine.style.display !== "none") lines.push(`Sidewalk: ${sidePrice.textContent}`);
-  if (saltLine.style.display !== "none") lines.push(`Salting: ${saltPrice.textContent}`);
-  lines.push(`Total: ${money(lastTotals.totalFinal)}`);
-
-  return `MN Plowing LLC – Quick Quote
-
-${cust ? `Customer: ${cust}\n` : ""}Business: ${biz}
-
-Service Address:
-${addr}
-
-${lines.join("\n")}
-
-If you’d like to move forward, reply to confirm service type and any special instructions.
-Nick Altiere – MN Plowing LLC
-218-349-3737
-info@mnplowing.com`;
-}
-
 /* Calculation */
 function calc(){
   const dMin = Math.max(0, Number(driveMinutes.value || 0));
@@ -673,13 +622,17 @@ function calc(){
   const sMin = Math.max(0, Number(sideMinutes.value || 0));
   const sRate = Math.max(0, Number(sideRate.value || 0));
 
+  // Base computed costs (not "manual inputs", so not rounded here)
   let dCost = (dRate/60) * dMin;
   let sCost = sMin * sRate;
 
-const saltClean = sanitizeCurrency(saltAmount.value);
-const saltNum = parseFloat(saltClean);
-let saltCost = (Number.isFinite(saltNum) ? saltNum : 0);
+  // Salt is manual, but we only round when user finishes typing (blur).
+  // Still parse safely here so totals work even before blur.
+  const saltClean = sanitizeCurrency(saltAmount.value);
+  const saltNum = parseFloat(saltClean);
+  let saltCost = (Number.isFinite(saltNum) ? saltNum : 0);
 
+  // Enforce minimums (minimum fields are manual + rounded on blur)
   if (enforceMinimums && enforceMinimums.checked) {
     const minPlowVal = Math.max(0, parseFloat(sanitizeCurrency(minPlow.value)) || 0);
     const minShovelVal = Math.max(0, parseFloat(sanitizeCurrency(minShovel.value)) || 0);
@@ -690,38 +643,33 @@ let saltCost = (Number.isFinite(saltNum) ? saltNum : 0);
     if (saltCost > 0) saltCost = Math.max(saltCost, minSaltVal);
   }
 
-  let totalBeforeRounding = 0;
+  // Visibility + totals (NO "Round Total" setting anymore)
+  let totalFinal = 0;
 
   if(service.value === "both"){
     driveLine.style.display = "flex";
     sideLine.style.display = "flex";
-    totalBeforeRounding = dCost + sCost + saltCost;
+    totalFinal = dCost + sCost + saltCost;
   } else if(service.value === "driveway"){
     driveLine.style.display = "flex";
     sideLine.style.display = "none";
-    totalBeforeRounding = dCost + saltCost;
+    totalFinal = dCost + saltCost;
   } else {
     driveLine.style.display = "none";
     sideLine.style.display = "flex";
-    totalBeforeRounding = sCost + saltCost;
+    totalFinal = sCost + saltCost;
   }
 
-  if (saltCost > 0) {
-    saltLine.style.display = "flex";
-  } else {
-    saltLine.style.display = "none";
-  }
+  saltLine.style.display = (saltCost > 0) ? "flex" : "none";
 
-  const inc = getRoundingIncrement();
-  const totalFinal = roundToIncrement(totalBeforeRounding, inc);
-
-  lastTotals = { dCost, sCost, saltCost, totalBeforeRounding, totalFinal };
+  lastTotals = { dCost, sCost, saltCost, totalFinal };
 
   drivePrice.textContent = money(dCost);
   sidePrice.textContent = money(sCost);
   saltPrice.textContent = money(saltCost);
   totalAmount.textContent = money(totalFinal);
 
+  // Pulse animation
   totalAmount.classList.remove("totalPulse");
   void totalAmount.offsetWidth;
   totalAmount.classList.add("totalPulse");
@@ -730,18 +678,15 @@ let saltCost = (Number.isFinite(saltNum) ? saltNum : 0);
   if (quoteModal.style.display === "block") updateQuotePreview();
 }
 
-/* Sanitization: salt on blur */
+/* Manual money input rounding + sanitization on blur */
 saltAmount.addEventListener("blur", () => {
-  const cleaned = sanitizeCurrency(saltAmount.value);
-  saltAmount.value = cleaned; // blank if invalid
+  normalizeManualMoneyInput(saltAmount); // sanitize + round to nearest $5
   calc();
 });
 
-/* Optional: sanitize minimum fields on blur too */
 [minPlow, minShovel, minSalt].forEach(el => {
   el.addEventListener("blur", () => {
-    const cleaned = sanitizeCurrency(el.value);
-    if (cleaned) el.value = cleaned;
+    normalizeManualMoneyInput(el); // sanitize + round to nearest $5
     calc();
   });
 });
@@ -749,7 +694,7 @@ saltAmount.addEventListener("blur", () => {
 /* Events */
 [
   service, driveMinutes, driveRate, sideMinutes, sideRate,
-  saltAmount, enforceMinimums, minPlow, minShovel, minSalt, roundMode
+  saltAmount, enforceMinimums, minPlow, minShovel, minSalt
 ].forEach(el=>{
   el.addEventListener("input", calc);
   el.addEventListener("change", calc);
@@ -808,7 +753,6 @@ function closeQuoteSummary(){
 }
 
 function updateQuotePreview(){
-  // Only one quote now (notes are included and visible to everyone as requested)
   quoteText.value = buildQuoteText();
 }
 
@@ -816,7 +760,6 @@ async function copyTextToClipboard(text, successBtn){
   try{
     await navigator.clipboard.writeText(text);
   } catch(e){
-    // Fallback for older browsers
     const ta = document.createElement("textarea");
     ta.value = text;
     ta.style.position = "fixed";
