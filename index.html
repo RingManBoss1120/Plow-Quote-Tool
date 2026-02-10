@@ -384,6 +384,47 @@ button.success{
   </div>
 </div>
 
+<!-- PRICING RULES -->
+<div class="sectionTitle">Pricing Rules</div>
+<div class="card">
+  <label style="display:flex; gap:10px; align-items:center; margin-bottom:12px;">
+    <input id="enforceMinimums" type="checkbox" checked style="width:auto; margin:0;">
+    Enforce minimum charges (Plow $30 / Shovel $25 / Salt $30)
+  </label>
+
+  <div class="customerGrid">
+    <div>
+      <label>Minimum Plow (Driveway)</label>
+      <div class="moneyWrap">
+        <input id="minPlow" class="moneyInput" inputmode="decimal" value="30">
+      </div>
+    </div>
+
+    <div>
+      <label>Minimum Shovel (Sidewalk)</label>
+      <div class="moneyWrap">
+        <input id="minShovel" class="moneyInput" inputmode="decimal" value="25">
+      </div>
+    </div>
+
+    <div class="span2">
+      <label>Minimum Salt</label>
+      <div class="moneyWrap">
+        <input id="minSalt" class="moneyInput" inputmode="decimal" value="30">
+      </div>
+    </div>
+
+    <div class="span2">
+      <label>Round Total</label>
+      <select id="roundMode">
+        <option value="none" selected>No rounding</option>
+        <option value="5">Round to nearest $5</option>
+        <option value="10">Round to nearest $10</option>
+      </select>
+    </div>
+  </div>
+</div>
+
 <!-- PRICING -->
 <div class="sectionTitle">Pricing</div>
 <div class="card">
@@ -415,8 +456,42 @@ button.success{
 <div class="card">
   <div class="actionsGrid">
     <button id="emailBtn" onclick="emailQuote()">Email Quote</button>
-    <button id="copyBtn" class="success" onclick="copyQuote()">Copy Quote</button>
+    <button id="summaryBtn" class="success" onclick="openQuoteSummary()">Quote Summary</button>
     <button class="secondary" onclick="clearAll()">Clear</button>
+  </div>
+</div>
+
+<!-- QUOTE SUMMARY MODAL -->
+<div id="quoteModal" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  padding:18px;
+  z-index:9999;
+">
+  <div class="card" style="max-width:760px;margin:0 auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+      <div style="font-weight:950;letter-spacing:.3px;">Quote Summary</div>
+      <button class="secondary" style="width:auto;padding:10px 14px;" onclick="closeQuoteSummary()">Close</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <label>Preview</label>
+    <select id="previewMode">
+      <option value="internal" selected>Internal (includes notes)</option>
+      <option value="customer">Customer-facing (no notes)</option>
+    </select>
+
+    <label>Quote Text</label>
+    <textarea id="quoteText" rows="14" readonly></textarea>
+
+    <div class="actionsGrid" style="margin-top:10px;">
+      <button id="copyInternalBtn" onclick="copyInternal()">Copy Internal Quote</button>
+      <button id="copyCustomerBtn" class="success" onclick="copyCustomer()">Copy Customer Quote</button>
+      <button class="secondary" onclick="emailQuote()">Try Email</button>
+    </div>
   </div>
 </div>
 
@@ -428,6 +503,12 @@ const driveRate = document.getElementById("driveRate");
 const sideMinutes = document.getElementById("sideMinutes");
 const sideRate = document.getElementById("sideRate");
 const saltAmount = document.getElementById("saltAmount");
+
+const enforceMinimums = document.getElementById("enforceMinimums");
+const minPlow = document.getElementById("minPlow");
+const minShovel = document.getElementById("minShovel");
+const minSalt = document.getElementById("minSalt");
+const roundMode = document.getElementById("roundMode");
 
 const driveLine = document.getElementById("driveLine");
 const sideLine = document.getElementById("sideLine");
@@ -449,12 +530,44 @@ const state = document.getElementById("state");
 const zip = document.getElementById("zip");
 const notes = document.getElementById("notes");
 
-const copyBtn = document.getElementById("copyBtn");
+/* Quote modal */
+const quoteModal = document.getElementById("quoteModal");
+const quoteText = document.getElementById("quoteText");
+const previewMode = document.getElementById("previewMode");
+
+/* State */
+let lastTotals = {
+  dCost: 0,
+  sCost: 0,
+  saltCost: 0,
+  totalBeforeRounding: 0,
+  totalFinal: 0
+};
 
 /* Helpers */
 function money(n){
   const v = Number(n || 0);
   return "$" + v.toFixed(2);
+}
+
+function sanitizeCurrency(raw){
+  let s = (raw || "").trim();
+  if (!s) return "";
+
+  if (/^(n\/a|na|none)$/i.test(s)) return "";
+
+  s = s.replace(/\s+/g, "").replace(/\$/g, "");
+
+  if (s.includes(",") && !s.includes(".")) {
+    s = s.replace(",", ".");
+  } else {
+    s = s.replace(/,/g, "");
+  }
+
+  const n = parseFloat(s);
+  if (!Number.isFinite(n)) return "";
+
+  return n.toFixed(2);
 }
 
 function formatCustomer(){
@@ -476,6 +589,19 @@ function formatAddress(){
   return [line1, line2].filter(Boolean).join("\n");
 }
 
+function getRoundingIncrement(){
+  const mode = roundMode.value;
+  if (mode === "5") return 5;
+  if (mode === "10") return 10;
+  return 0;
+}
+
+function roundToIncrement(value, inc){
+  if (!inc) return value;
+  return Math.round(value / inc) * inc;
+}
+
+/* Quote text builders */
 function buildQuoteText(){
   const cust = formatCustomer() || "—";
   const biz = (businessName.value || "").trim() || "N/A";
@@ -484,12 +610,18 @@ function buildQuoteText(){
   const addr = formatAddress() || "—";
   const note = (notes.value || "").trim() || "—";
 
-  // Only include the service lines that are actually showing
   const lines = [];
   if (driveLine.style.display !== "none") lines.push(`Driveway: ${drivePrice.textContent}`);
   if (sideLine.style.display !== "none") lines.push(`Sidewalk: ${sidePrice.textContent}`);
   if (saltLine.style.display !== "none") lines.push(`Salting: ${saltPrice.textContent}`);
-  lines.push(`Total: ${totalAmount.textContent}`);
+
+  const inc = getRoundingIncrement();
+  if (inc) {
+    lines.push(`Subtotal (calculated): ${money(lastTotals.totalBeforeRounding)}`);
+    lines.push(`Total (rounded): ${money(lastTotals.totalFinal)}`);
+  } else {
+    lines.push(`Total: ${money(lastTotals.totalFinal)}`);
+  }
 
   return `Quick Quote Provided by
 MN Plowing LLC
@@ -509,13 +641,9 @@ ${lines.join("\n")}
 
 Thank you for your interest in MN Plowing Snow Removal Services.
 
-This quote was prepared specifically for your property based on the information provided. If you would like to move forward or have any questions, we would be happy to review service details with you, including dispatch timing, billing structure, service expectations, and how we manage snow and ice events.
-
 Please contact Nick Altiere at:
 Phone: 218-349-3737
-Email: info@mnplowing.com
-
-We appreciate the opportunity to earn your business.`;
+Email: info@mnplowing.com`;
 }
 
 function buildCustomerQuoteText(){
@@ -523,12 +651,11 @@ function buildCustomerQuoteText(){
   const biz = (businessName.value || "").trim() || "N/A";
   const addr = formatAddress() || "—";
 
-  // Only include the service lines that are actually showing
   const lines = [];
   if (driveLine.style.display !== "none") lines.push(`Driveway: ${drivePrice.textContent}`);
   if (sideLine.style.display !== "none") lines.push(`Sidewalk: ${sidePrice.textContent}`);
   if (saltLine.style.display !== "none") lines.push(`Salting: ${saltPrice.textContent}`);
-  lines.push(`Total: ${totalAmount.textContent}`);
+  lines.push(`Total: ${money(lastTotals.totalFinal)}`);
 
   return `MN Plowing LLC – Quick Quote
 
@@ -544,60 +671,91 @@ Nick Altiere – MN Plowing LLC
 218-349-3737
 info@mnplowing.com`;
 }
-  
+
 /* Calculation */
 function calc(){
-  const dMin = Number(driveMinutes.value || 0);
-  const dRate = Number(driveRate.value || 400);
-  const sMin = Number(sideMinutes.value || 0);
-  const sRate = Number(sideRate.value || 0);
+  const dMin = Math.max(0, Number(driveMinutes.value || 0));
+  const dRate = Math.max(0, Number(driveRate.value || 400));
+  const sMin = Math.max(0, Number(sideMinutes.value || 0));
+  const sRate = Math.max(0, Number(sideRate.value || 0));
 
-  const dCost = (dRate/60) * dMin;
-  const sCost = sMin * sRate;
+  let dCost = (dRate/60) * dMin;
+  let sCost = sMin * sRate;
 
-  // Salting: optional, only counts if >0
-  const saltRaw = (saltAmount.value || "").trim();
-  const saltNum = parseFloat(saltRaw);
+  const saltNum = parseFloat((saltAmount.value || "").trim());
+  let saltCost = (Number.isFinite(saltNum) ? saltNum : 0);
 
-  let salt = 0;
-  if (saltRaw !== "" && Number.isFinite(saltNum) && saltNum > 0) {
-    salt = saltNum;
-    saltPrice.textContent = money(salt);
-    saltLine.style.display = "flex";
-  } else {
-    saltPrice.textContent = money(0);
-    saltLine.style.display = "none";
+  if (enforceMinimums && enforceMinimums.checked) {
+    const minPlowVal = Math.max(0, parseFloat(sanitizeCurrency(minPlow.value)) || 0);
+    const minShovelVal = Math.max(0, parseFloat(sanitizeCurrency(minShovel.value)) || 0);
+    const minSaltVal = Math.max(0, parseFloat(sanitizeCurrency(minSalt.value)) || 0);
+
+    if (dMin > 0) dCost = Math.max(dCost, minPlowVal);
+    if (sMin > 0) sCost = Math.max(sCost, minShovelVal);
+    if (saltCost > 0) saltCost = Math.max(saltCost, minSaltVal);
   }
 
-  // Service visibility + totals
-  let total = 0;
+  let totalBeforeRounding = 0;
 
   if(service.value === "both"){
     driveLine.style.display = "flex";
     sideLine.style.display = "flex";
-    total = dCost + sCost + salt;
+    totalBeforeRounding = dCost + sCost + saltCost;
   } else if(service.value === "driveway"){
     driveLine.style.display = "flex";
     sideLine.style.display = "none";
-    total = dCost + salt;
-  } else { // sidewalk
+    totalBeforeRounding = dCost + saltCost;
+  } else {
     driveLine.style.display = "none";
     sideLine.style.display = "flex";
-    total = sCost + salt;
+    totalBeforeRounding = sCost + saltCost;
   }
+
+  if (saltCost > 0) {
+    saltLine.style.display = "flex";
+  } else {
+    saltLine.style.display = "none";
+  }
+
+  const inc = getRoundingIncrement();
+  const totalFinal = roundToIncrement(totalBeforeRounding, inc);
+
+  lastTotals = { dCost, sCost, saltCost, totalBeforeRounding, totalFinal };
 
   drivePrice.textContent = money(dCost);
   sidePrice.textContent = money(sCost);
-  totalAmount.textContent = money(total);
+  saltPrice.textContent = money(saltCost);
+  totalAmount.textContent = money(totalFinal);
 
-  // Pulse animation
   totalAmount.classList.remove("totalPulse");
   void totalAmount.offsetWidth;
   totalAmount.classList.add("totalPulse");
+
+  // keep modal preview fresh if open
+  if (quoteModal.style.display === "block") updateQuotePreview();
 }
 
+/* Sanitization: salt on blur */
+saltAmount.addEventListener("blur", () => {
+  const cleaned = sanitizeCurrency(saltAmount.value);
+  saltAmount.value = cleaned; // blank if invalid
+  calc();
+});
+
+/* Optional: sanitize minimum fields on blur too */
+[minPlow, minShovel, minSalt].forEach(el => {
+  el.addEventListener("blur", () => {
+    const cleaned = sanitizeCurrency(el.value);
+    if (cleaned) el.value = cleaned;
+    calc();
+  });
+});
+
 /* Events */
-[service, driveMinutes, driveRate, sideMinutes, sideRate, saltAmount].forEach(el=>{
+[
+  service, driveMinutes, driveRate, sideMinutes, sideRate,
+  saltAmount, enforceMinimums, minPlow, minShovel, minSalt, roundMode
+].forEach(el=>{
   el.addEventListener("input", calc);
   el.addEventListener("change", calc);
 });
@@ -609,7 +767,6 @@ function clearAll(){
   businessName.value = "";
   customerEmail.value = "";
 
-  // Clear phone (Safari sometimes auto-refills)
   customerPhone.value = "";
   customerPhone.blur();
   setTimeout(() => { customerPhone.value = ""; }, 0);
@@ -620,17 +777,16 @@ function clearAll(){
   zip.value = "";
   notes.value = "";
 
-  // Salting reset (explicit)
   saltAmount.value = "";
   saltLine.style.display = "none";
 
-  // Service minutes reset
   driveMinutes.value = "";
   sideMinutes.value = "";
 
-  // Recalculate totals
+  closeQuoteSummary();
   calc();
 }
+
 function emailQuote(){
   const subject = `MN Plowing Quick Quote – ${formatCustomer() || "Customer"}`;
   const body = buildQuoteText();
@@ -646,17 +802,27 @@ function emailQuote(){
   window.location.href = mailto;
 }
 
-async function copyQuote(){
-  const text = buildCustomerQuoteText();
+/* Quote summary modal */
+function openQuoteSummary(){
+  quoteModal.style.display = "block";
+  updateQuotePreview();
+}
 
+function closeQuoteSummary(){
+  quoteModal.style.display = "none";
+}
+
+function updateQuotePreview(){
+  const mode = previewMode.value;
+  quoteText.value = (mode === "customer") ? buildCustomerQuoteText() : buildQuoteText();
+}
+
+previewMode.addEventListener("change", updateQuotePreview);
+
+async function copyTextToClipboard(text, successBtn){
   try{
     await navigator.clipboard.writeText(text);
-
-    const original = copyBtn.textContent;
-    copyBtn.textContent = "Copied!";
-    setTimeout(() => { copyBtn.textContent = original; }, 1200);
   } catch(e){
-    // Fallback for older browsers
     const ta = document.createElement("textarea");
     ta.value = text;
     ta.style.position = "fixed";
@@ -666,11 +832,23 @@ async function copyQuote(){
     ta.select();
     document.execCommand("copy");
     document.body.removeChild(ta);
-
-    const original = copyBtn.textContent;
-    copyBtn.textContent = "Copied!";
-    setTimeout(() => { copyBtn.textContent = original; }, 1200);
   }
+
+  if (successBtn) {
+    const original = successBtn.textContent;
+    successBtn.textContent = "Copied!";
+    setTimeout(() => { successBtn.textContent = original; }, 1200);
+  }
+}
+
+function copyInternal(){
+  const btn = document.getElementById("copyInternalBtn");
+  copyTextToClipboard(buildQuoteText(), btn);
+}
+
+function copyCustomer(){
+  const btn = document.getElementById("copyCustomerBtn");
+  copyTextToClipboard(buildCustomerQuoteText(), btn);
 }
 
 /* Init */
