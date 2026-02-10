@@ -370,6 +370,8 @@ const driveLine = document.getElementById("driveLine");
 const sideLine = document.getElementById("sideLine");
 const drivePrice = document.getElementById("drivePrice");
 const sidePrice = document.getElementById("sidePrice");
+const saltAmount = document.getElementById("saltAmount");
+const saltPrice = document.getElementById("saltPrice");
 const totalAmount = document.getElementById("totalAmount");
 
 // New customer/address fields
@@ -403,19 +405,28 @@ function calc(){
   const sCost = sMin*sRate;
 
   let total = 0;
+  let salt = 0;
 
+if (saltAmount.value && saltAmount.value !== "N/A") {
+  salt = Number(saltAmount.value) || 0;
+  saltPrice.textContent = money(salt);
+  saltLine.style.display = "flex";
+} else {
+  saltPrice.textContent = "N/A";
+  saltLine.style.display = "flex";
+}
   if(service.value==="both"){
-    total = dCost+sCost;
+    total = dCost+sCost+salt;
     driveLine.style.display="flex";
     sideLine.style.display="flex";
   }
   if(service.value==="driveway"){
-    total = dCost;
+    total = dCost+salt;
     driveLine.style.display="flex";
     sideLine.style.display="none";
   }
   if(service.value==="sidewalk"){
-    total = sCost;
+    total = sCost+salt;
     driveLine.style.display="none";
     sideLine.style.display="flex";
   }
