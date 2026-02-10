@@ -796,7 +796,7 @@ function emailQuote(){
   window.location.href = mailto;
 }
 
-/* Quote summary modal */
+/* Quote summary modal (SIMPLE) */
 function openQuoteSummary(){
   quoteModal.style.display = "block";
   updateQuotePreview();
@@ -807,16 +807,15 @@ function closeQuoteSummary(){
 }
 
 function updateQuotePreview(){
-  const mode = previewMode.value;
-  quoteText.value = (mode === "customer") ? buildCustomerQuoteText() : buildQuoteText();
+  // Only one quote now (notes are included and visible to everyone as requested)
+  quoteText.value = buildQuoteText();
 }
-
-previewMode.addEventListener("change", updateQuotePreview);
 
 async function copyTextToClipboard(text, successBtn){
   try{
     await navigator.clipboard.writeText(text);
   } catch(e){
+    // Fallback for older browsers
     const ta = document.createElement("textarea");
     ta.value = text;
     ta.style.position = "fixed";
@@ -835,14 +834,8 @@ async function copyTextToClipboard(text, successBtn){
   }
 }
 
-function copyInternal(){
-  const btn = document.getElementById("copyInternalBtn");
-  copyTextToClipboard(buildQuoteText(), btn);
-}
-
-function copyCustomer(){
-  const btn = document.getElementById("copyCustomerBtn");
-  copyTextToClipboard(buildCustomerQuoteText(), btn);
+function copyQuoteFromModal(){
+  copyTextToClipboard(buildQuoteText(), copyQuoteBtn);
 }
 
 /* Init */
