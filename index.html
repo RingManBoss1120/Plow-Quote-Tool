@@ -317,6 +317,13 @@ button.secondary{
   </select>
 </div>
 
+<!-- SALTING -->
+<div class="sectionTitle">Salting Services</div>
+<div class="card">
+  <label>Salting</label>
+  <input id="saltAmount" placeholder="N/A" inputmode="decimal">
+</div>  
+
 <!-- PRICING -->
 <div class="sectionTitle">Pricing</div>
 <div class="card">
@@ -369,6 +376,7 @@ const city = document.getElementById("city");
 const state = document.getElementById("state");
 const zip = document.getElementById("zip");
 const notes = document.getElementById("notes");
+const saltAmount = document.getElementById("saltAmount");
   
 function money(n){
   return "$" + (n || 0).toFixed(2);
@@ -427,6 +435,7 @@ function clearAll(){
   state.value = "";
   zip.value = "";
   notes.value = "";
+  saltAmount.value = "";
   driveMinutes.value = "";
   sideMinutes.value = "";
   calc();
@@ -472,6 +481,7 @@ ${(notes.value || "").trim() || "—"}
 
 Driveway: ${drivePrice.textContent}
 Sidewalk: ${sidePrice.textContent}
+Salting: ${(saltAmount.value || "").trim() || "N/A"}
 Total: ${totalAmount.textContent}`;
 
   const mailto =
