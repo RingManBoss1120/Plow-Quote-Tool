@@ -487,8 +487,8 @@ function emailQuote(){
   const subject = `MN Plowing Quick Quote – ${formatCustomer()}`;
 
 const body =
+`Quick Quote Provided by MN Plowing LLC
 
-Quick Quote Provided by MN Plowing llc
 Customer: ${formatCustomer()}
 Business: ${(businessName.value || "").trim() || "N/A"}
 Email: ${customerEmail.value || "—"}
@@ -504,7 +504,6 @@ Driveway: ${drivePrice.textContent}
 Sidewalk: ${sidePrice.textContent}
 Salting: ${saltPrice.textContent}
 Total: ${totalAmount.textContent}`;
-
   const mailto =
     "mailto:info@mnplowing.com" +
     "?subject=" + encodeURIComponent(subject) +
