@@ -523,12 +523,15 @@ Phone: 218-349-3737
 Email: info@mnplowing.com
 
 We appreciate the opportunity to earn your business.`;
-  const mailto =
-    "mailto:info@mnplowing.com" +
-    "?subject=" + encodeURIComponent(subject) +
-    "&body=" + encodeURIComponent(body);
+  const cc = (customerEmail.value || "").trim();
 
-  window.location.href = mailto;
+const mailto =
+  "mailto:info@mnplowing.com" +
+  "?subject=" + encodeURIComponent(subject) +
+  (cc ? "&cc=" + encodeURIComponent(cc) : "") +
+  "&body=" + encodeURIComponent(body);
+
+window.location.href = mailto;
 }
 
 
