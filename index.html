@@ -519,7 +519,7 @@ We appreciate the opportunity to earn your business.`;
 }
 
 function buildCustomerQuoteText(){
-  const cust = formatCustomer() || "—";
+  const cust = formatCustomer();
   const biz = (businessName.value || "").trim() || "N/A";
   const addr = formatAddress() || "—";
 
@@ -532,8 +532,7 @@ function buildCustomerQuoteText(){
 
   return `MN Plowing LLC – Quick Quote
 
-Customer: ${cust}
-Business: ${biz}
+${cust ? `Customer: ${cust}\n` : ""}Business: ${biz}
 
 Service Address:
 ${addr}
