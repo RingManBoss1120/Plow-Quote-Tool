@@ -461,7 +461,7 @@ button.success{
   </div>
 </div>
 
-<!-- QUOTE SUMMARY MODAL -->
+<!-- QUOTE SUMMARY MODAL (SIMPLE) -->
 <div id="quoteModal" style="
   display:none;
   position:fixed;
@@ -478,19 +478,13 @@ button.success{
 
     <div class="divider"></div>
 
-    <label>Preview</label>
-    <select id="previewMode">
-      <option value="internal" selected>Internal (includes notes)</option>
-      <option value="customer">Customer-facing (no notes)</option>
-    </select>
-
     <label>Quote Text</label>
     <textarea id="quoteText" rows="14" readonly></textarea>
 
     <div class="actionsGrid" style="margin-top:10px;">
-      <button id="copyInternalBtn" onclick="copyInternal()">Copy Internal Quote</button>
-      <button id="copyCustomerBtn" class="success" onclick="copyCustomer()">Copy Customer Quote</button>
-      <button class="secondary" onclick="emailQuote()">Try Email</button>
+      <button id="copyQuoteBtn" class="success" onclick="copyQuoteFromModal()">Copy Quote</button>
+      <button class="secondary" onclick="emailQuote()">Email Quote</button>
+      <button class="secondary" onclick="closeQuoteSummary()">Close</button>
     </div>
   </div>
 </div>
