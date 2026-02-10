@@ -73,6 +73,9 @@ body{
   padding:18px;
   margin-bottom:18px;
 
+transition: transform .18s ease, box-shadow .18s ease;
+will-change: transform;
+  
   /* Blue floating card look */
   background:linear-gradient(180deg, rgba(10,26,53,.92), rgba(7,22,46,.92));
   border:1px solid var(--border);
@@ -84,7 +87,17 @@ body{
     0 10px 22px rgba(43,123,255,.12);
   backdrop-filter: blur(8px);
 }
+.card:hover{
+  transform: translateY(-2px);
+  box-shadow:
+    0 22px 60px rgba(0,0,0,.6),
+    0 0 0 1px rgba(43,123,255,.12) inset,
+    0 14px 30px rgba(43,123,255,.18);
+}
 
+.card:active{
+  transform: scale(.99);
+}
 label{
   font-weight:700;
   display:block;
