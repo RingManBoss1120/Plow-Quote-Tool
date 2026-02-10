@@ -610,6 +610,7 @@ function clearAll(){
   businessName.value = "";
   customerEmail.value = "";
 
+  // Clear phone (Safari sometimes auto-refills)
   customerPhone.value = "";
   customerPhone.blur();
   setTimeout(() => { customerPhone.value = ""; }, 0);
@@ -619,11 +620,18 @@ function clearAll(){
   state.value = "MN";
   zip.value = "";
   notes.value = "";
-  saltAmount.value = "";
 
+  // Salting reset (explicit)
+  saltAmount.value = "";
+  saltLine.style.display = "none";
+
+  // Service minutes reset
+  driveMinutes.value = "";
+  sideMinutes.value = "";
+
+  // Recalculate totals
   calc();
 }
-
 function emailQuote(){
   const subject = `MN Plowing Quick Quote – ${formatCustomer() || "Customer"}`;
   const body = buildQuoteText();
