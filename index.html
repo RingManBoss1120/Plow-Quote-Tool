@@ -165,7 +165,11 @@ button.secondary{
   color:rgba(234,242,255,.95);
   text-shadow:0 0 22px rgba(43,123,255,.22);
 
-  white-space: nowrap;   /* 👈 keeps it on one line */
+  /* 🔒 KEEP TEXT INSIDE THE CARD */
+  max-width:100%;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 </style>
 </head>
