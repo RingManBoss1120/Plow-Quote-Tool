@@ -298,6 +298,26 @@ button.secondary{
 .moneyInput input {
   padding-left: 36px;
 }
+
+/* MOBILE: tighten the logo header so sections sit higher */
+@media (max-width: 520px){
+  body{ padding:14px; }
+
+  .logoCard{
+    padding:14px !important;   /* override the inline 20px */
+    margin-bottom:14px;
+  }
+
+  .logoCard img{
+    max-width:260px !important;
+  }
+
+  .tagline{
+    font-size:20px;
+    letter-spacing:1.5px;
+    margin-top:8px;
+  }
+}
   
 </style>
 </head>
