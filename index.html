@@ -266,7 +266,12 @@ button.secondary{
     <input id="street" autocomplete="street-address">
 
     <label>City</label>
-    <input id="city" autocomplete="address-level2">
+<select id="city">
+  <option value="Duluth" selected>Duluth</option>
+  <option value="Hermantown">Hermantown</option>
+  <option value="Superior">Superior</option>
+  <option value="Proctor">Proctor</option>
+</select>
 
     <label>State</label>
 <select id="state">
@@ -456,7 +461,7 @@ function clearAll(){
   setTimeout(() => { customerPhone.value = ""; }, 0);
 
   street.value = "";
-  city.value = "";
+  city.value = "Duluth";
   state.value = "MN";
   zip.value = "";
   notes.value = "";
