@@ -381,7 +381,11 @@ const saltAmount = document.getElementById("saltAmount");
 function money(n){
   return "$" + (n || 0).toFixed(2);
 }
-
+function formatDollarOrNA(val){
+  const n = parseFloat(val);
+  return isNaN(n) ? "N/A" : "$" + n.toFixed(2);
+}
+  
 function calc(){
   const dMin = Number(driveMinutes.value||0);
   const dRate = Number(driveRate.value||400);
