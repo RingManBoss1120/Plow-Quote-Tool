@@ -12,14 +12,14 @@
 *{box-sizing:border-box;}
 
 :root{
-  --bg0:#05070c;         /* near-black */
-  --bg1:#070b14;         /* deep navy */
-  --cardA:#0a1a35;       /* blue card base */
-  --cardB:#07162e;       /* blue card depth */
+  --bg0:#05070c;
+  --bg1:#070b14;
+  --cardA:#0a1a35;
+  --cardB:#07162e;
   --border:rgba(255,255,255,.10);
   --text:#eaf2ff;
   --muted:rgba(234,242,255,.70);
-  --primary:#2b7bff;     /* electric blue accent */
+  --primary:#2b7bff;
   --danger:#ef4444;
 }
 
@@ -28,14 +28,12 @@ body{
   margin:0;
   padding:20px;
   color:var(--text);
-
-  /* Black background + blue glow like your example */
   background:
     radial-gradient(900px 500px at 50% -10%, rgba(43,123,255,.35), transparent 55%),
     radial-gradient(700px 420px at 10% 30%, rgba(43,123,255,.18), transparent 60%),
     linear-gradient(180deg, var(--bg1), var(--bg0));
 }
-  
+
 .wrap{
   max-width:760px;
   margin:0 auto;
@@ -55,45 +53,34 @@ body{
   height:1px;
   width:100%;
   margin-top:6px;
-  background:linear-gradient(
-    90deg,
-    transparent,
-    rgba(43,123,255,.5),
-    transparent
-  );
+  background:linear-gradient(90deg, transparent, rgba(43,123,255,.5), transparent);
 }
-  
-/* STEP 3A — Customer grid */
+
+/* Customer grid */
 .customerGrid{
   display:grid;
   grid-template-columns: 1fr;
   gap:14px;
 }
-
 @media (min-width: 900px){
   .customerGrid{
     grid-template-columns: 1fr 1fr;
     gap:18px;
   }
 }
-
 .customerGrid .span2{
   grid-column: 1 / -1;
 }
-  
+
 .card{
   border-radius:20px;
   padding:18px;
   margin-bottom:18px;
+  transition: transform .18s ease, box-shadow .18s ease;
+  will-change: transform;
 
-transition: transform .18s ease, box-shadow .18s ease;
-will-change: transform;
-  
-  /* Blue floating card look */
   background:linear-gradient(180deg, rgba(10,26,53,.92), rgba(7,22,46,.92));
   border:1px solid var(--border);
-
-  /* Depth + glow */
   box-shadow:
     0 18px 50px rgba(0,0,0,.55),
     0 0 0 1px rgba(43,123,255,.08) inset,
@@ -107,10 +94,8 @@ will-change: transform;
     0 0 0 1px rgba(43,123,255,.12) inset,
     0 14px 30px rgba(43,123,255,.18);
 }
+.card:active{ transform: scale(.99); }
 
-.card:active{
-  transform: scale(.99);
-}
 label{
   font-weight:700;
   display:block;
@@ -125,31 +110,11 @@ input,select,textarea{
   font-size:16px;
   border-radius:14px;
   margin-bottom:12px;
-
   background:rgba(2,8,18,.55);
   border:1px solid rgba(255,255,255,.10);
   color:var(--text);
 }
 
-.moneyWrap{
-  position:relative;
-}
-
-.moneyWrap::before{
-  content:"$";
-  position:absolute;
-  left:14px;
-  top:50%;
-  transform:translateY(-50%);
-  color:rgba(234,242,255,.55);
-  font-weight:800;
-  pointer-events:none;
-}
-
-.moneyInput{
-  padding-left:34px;
-}
-  
 input::placeholder,
 textarea::placeholder{
   color:rgba(234,242,255,.45);
@@ -165,7 +130,7 @@ textarea:focus{
 
 select{
   appearance:none;
-  background-color: rgba(2,8,18,.55); /* add this */
+  background-color: rgba(2,8,18,.55);
   background-image:
     linear-gradient(45deg, transparent 50%, rgba(234,242,255,.75) 50%),
     linear-gradient(135deg, rgba(234,242,255,.75) 50%, transparent 50%);
@@ -175,9 +140,21 @@ select{
   padding-right: 40px;
 }
 
-textarea{
-  resize:none;
+textarea{ resize:none; }
+
+/* $ prefix input wrapper */
+.moneyWrap{ position:relative; }
+.moneyWrap::before{
+  content:"$";
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  color:rgba(234,242,255,.55);
+  font-weight:800;
+  pointer-events:none;
 }
+.moneyInput{ padding-left:34px; }
 
 button{
   width:100%;
@@ -188,22 +165,36 @@ button{
   font-weight:900;
   letter-spacing:.4px;
   color:#fff;
-
   background:linear-gradient(135deg, rgba(43,123,255,1), rgba(31,95,191,1));
   box-shadow:
     0 12px 26px rgba(43,123,255,.35),
     0 2px 0 rgba(255,255,255,.15) inset;
 }
-
-button:active{
-  transform:scale(.985);
-}
+button:active{ transform:scale(.985); }
 
 button.secondary{
   background:rgba(148,163,184,.22);
   color:rgba(234,242,255,.85);
   box-shadow:none;
   border:1px solid rgba(255,255,255,.12);
+}
+
+button.success{
+  background:linear-gradient(135deg, rgba(16,185,129,1), rgba(5,150,105,1));
+  box-shadow:
+    0 12px 26px rgba(16,185,129,.22),
+    0 2px 0 rgba(255,255,255,.12) inset;
+}
+
+.actionsGrid{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:12px;
+}
+@media (min-width: 720px){
+  .actionsGrid{
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 
 .row{
@@ -228,7 +219,6 @@ button.secondary{
   align-items:center;
   padding-top:8px;
 }
-
 #totalAmount{
   color:var(--primary);
   text-shadow:
@@ -241,89 +231,35 @@ button.secondary{
   50%{ text-shadow:0 0 22px rgba(43,123,255,.7); }
   100%{ text-shadow:0 0 0 rgba(43,123,255,0); }
 }
+.totalPulse{ animation: pulseGlow .45s ease; }
 
-.totalPulse{
-  animation: pulseGlow .45s ease;
-}
-  
 .tagline{
   margin-top:10px;
   font-weight:950;
   text-transform:uppercase;
   color:rgba(234,242,255,.95);
   text-shadow:0 0 22px rgba(43,123,255,.22);
-
-  /* keep it on ONE line, but make it auto-fit phones */
   white-space:nowrap;
   padding:0 10px;
   max-width:100%;
-
-  /* this is the real fix: responsive sizing so it fits */
   font-size:clamp(18px, 4.8vw, 28px);
   letter-spacing:clamp(.5px, .8vw, 2px);
   line-height:1.1;
-}
-/* STEP 3A — 2-column customer grid (desktop), 1-column (phone) */
-.customerGrid{
-  display:grid;
-  grid-template-columns: 1fr;
-  gap:12px 14px;
-}
-
-@media (min-width: 900px){
-  .customerGrid{
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-/* Make specific items span full width */
-.customerGrid .span2{
-  grid-column: 1 / -1;
-}
-  /* SALTING $ PREFIX FIX */
-.moneyInput {
-  position: relative;
-}
-
-.moneyInput .prefix {
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: rgba(234,242,255,.85);
-  font-weight: 700;
-  pointer-events: none;
-}
-
-.moneyInput input {
-  padding-left: 36px;
 }
 
 /* MOBILE: tighten the logo header so sections sit higher */
 @media (max-width: 520px){
   body{ padding:14px; }
-
-  .logoCard{
-    padding:14px !important;   /* override the inline 20px */
-    margin-bottom:14px;
-  }
-
-  .logoCard img{
-    max-width:260px !important;
-  }
-
-  .tagline{
-    font-size:20px;
-    letter-spacing:1.5px;
-    margin-top:8px;
-  }
+  .logoCard{ padding:14px !important; margin-bottom:14px; }
+  .logoCard img{ max-width:260px !important; }
+  .tagline{ font-size:20px; letter-spacing:1.5px; margin-top:8px; }
 }
-  
 </style>
 </head>
 
 <body>
 <div class="wrap">
+
 <!-- LOGO -->
 <div class="card logoCard" style="
   text-align:center;
@@ -331,6 +267,7 @@ button.secondary{
   background:linear-gradient(135deg,#0b1f43,#07162e);
 ">
   <img src="MN%20Plowing%20Logo%20no%20back.png"
+       alt="MN Plowing"
        style="max-width:320px;width:100%;filter:drop-shadow(0 10px 18px rgba(0,0,0,.65));">
   <div class="tagline">"THE BLIZZARD BUSTERS"</div>
 </div>
@@ -340,49 +277,69 @@ button.secondary{
 <div class="card">
   <div class="customerGrid">
 
-    <label>Customer Last Name</label>
-    <input id="lastName" autocomplete="family-name">
+    <div>
+      <label>Customer Last Name</label>
+      <input id="lastName" autocomplete="family-name">
+    </div>
 
-    <label>Customer First Name</label>
-    <input id="firstName" autocomplete="given-name">
+    <div>
+      <label>Customer First Name</label>
+      <input id="firstName" autocomplete="given-name">
+    </div>
 
-    <label>Name of Business</label>
-    <input id="businessName" placeholder="N/A">
+    <div class="span2">
+      <label>Name of Business</label>
+      <input id="businessName" placeholder="N/A">
+    </div>
 
-    <label>Customer Email</label>
-    <input id="customerEmail" type="email" autocomplete="email">
+    <div>
+      <label>Customer Email</label>
+      <input id="customerEmail" type="email" autocomplete="email">
+    </div>
 
-    <label>Customer Phone</label>
-    <input id="customerPhone" type="tel" autocomplete="off" inputmode="tel">
+    <div>
+      <label>Customer Phone</label>
+      <input id="customerPhone" type="tel" autocomplete="off" inputmode="tel">
+    </div>
 
-    <label>Service Street Address</label>
-    <input id="street" autocomplete="street-address">
+    <div class="span2">
+      <label>Service Street Address</label>
+      <input id="street" autocomplete="street-address">
+    </div>
 
-    <label>City</label>
-<select id="city">
-  <option value="Duluth" selected>Duluth</option>
-  <option value="Hermantown">Hermantown</option>
-  <option value="Superior">Superior</option>
-  <option value="Proctor">Proctor</option>
-</select>
+    <div>
+      <label>City</label>
+      <select id="city">
+        <option value="Duluth" selected>Duluth</option>
+        <option value="Hermantown">Hermantown</option>
+        <option value="Superior">Superior</option>
+        <option value="Proctor">Proctor</option>
+      </select>
+    </div>
 
-    <label>State</label>
-<select id="state">
-  <option value="MN" selected>MN</option>
-  <option value="WI">WI</option>
-</select>
+    <div>
+      <label>State</label>
+      <select id="state">
+        <option value="MN" selected>MN</option>
+        <option value="WI">WI</option>
+      </select>
+    </div>
 
-    <label>Zip Code</label>
-    <input id="zip" inputmode="numeric" autocomplete="postal-code">
+    <div class="span2">
+      <label>Zip Code</label>
+      <input id="zip" inputmode="numeric" autocomplete="postal-code">
+    </div>
 
-    <label class="span2">Notes</label>
-    <textarea class="span2" id="notes" rows="4" placeholder="Notes (gate code, special instructions, pricing notes, follow-up, etc.)"></textarea>
+    <div class="span2">
+      <label>Notes</label>
+      <textarea class="span2" id="notes" rows="4" placeholder="Notes (gate code, special instructions, pricing notes, follow-up, etc.)"></textarea>
+    </div>
 
   </div>
 </div>
 
 <!-- SERVICE -->
-<div class="sectionTitle">Type of Service</div>  
+<div class="sectionTitle">Type of Service</div>
 <div class="card">
   <label>Service</label>
   <select id="service">
@@ -393,25 +350,25 @@ button.secondary{
 </div>
 
 <!-- DRIVEWAY -->
-<div class="sectionTitle">Driveway</div>  
+<div class="sectionTitle">Driveway</div>
 <div class="card">
   <label>Driveway Minutes</label>
-  <input id="driveMinutes" type="number">
+  <input id="driveMinutes" type="number" inputmode="numeric">
 
   <label>Driveway $ / Hour</label>
-  <input id="driveRate" type="number" value="400">
+  <input id="driveRate" type="number" inputmode="decimal" value="400">
 </div>
 
 <!-- SIDEWALK -->
-<div class="sectionTitle">Sidewalk</div>  
+<div class="sectionTitle">Sidewalk</div>
 <div class="card">
   <label>Sidewalk Minutes</label>
-  <input id="sideMinutes" type="number">
+  <input id="sideMinutes" type="number" inputmode="numeric">
 
   <label>Sidewalk $ / Minute</label>
   <select id="sideRate">
     <option value="4">$4</option>
-    <option value="5">$5</option>
+    <option value="5" selected>$5</option>
     <option value="6">$6</option>
     <option value="7">$7</option>
     <option value="8">$8</option>
@@ -420,17 +377,10 @@ button.secondary{
 
 <!-- SALTING -->
 <div class="sectionTitle">Salting Services</div>
-
 <div class="card">
-  <label>Salting</label>
-
-  <div class="moneyInput">
-    <span class="prefix">$</span>
-    <input
-      id="saltAmount"
-      placeholder="N/A"
-      inputmode="decimal"
-    >
+  <label>Salting (optional)</label>
+  <div class="moneyWrap">
+    <input id="saltAmount" class="moneyInput" placeholder="N/A" inputmode="decimal">
   </div>
 </div>
 
@@ -447,11 +397,11 @@ button.secondary{
     <span id="sidePrice">$0.00</span>
   </div>
 
-<div class="row" id="saltLine">
-  <span>Salting</span>
-  <span id="saltPrice">N/A</span>
-</div>
-  
+  <div class="row" id="saltLine" style="display:none;">
+    <span>Salting</span>
+    <span id="saltPrice">$0.00</span>
+  </div>
+
   <div class="divider"></div>
 
   <div class="totalRow">
@@ -460,33 +410,37 @@ button.secondary{
   </div>
 </div>
 
-<!-- BUTTONS -->
-<div class="sectionTitle">Actions</div>  
+<!-- ACTIONS -->
+<div class="sectionTitle">Actions</div>
 <div class="card">
- <button onclick="emailQuote()">Email Quote</button>
-  <button class="secondary" onclick="clearAll()">Clear</button>
+  <div class="actionsGrid">
+    <button id="emailBtn" onclick="emailQuote()">Email Quote</button>
+    <button id="copyBtn" class="success" onclick="copyQuote()">Copy Quote</button>
+    <button class="secondary" onclick="clearAll()">Clear</button>
+  </div>
 </div>
 
 <script>
+/* Elements */
 const service = document.getElementById("service");
 const driveMinutes = document.getElementById("driveMinutes");
 const driveRate = document.getElementById("driveRate");
 const sideMinutes = document.getElementById("sideMinutes");
 const sideRate = document.getElementById("sideRate");
+const saltAmount = document.getElementById("saltAmount");
 
 const driveLine = document.getElementById("driveLine");
 const sideLine = document.getElementById("sideLine");
+const saltLine = document.getElementById("saltLine");
+
 const drivePrice = document.getElementById("drivePrice");
 const sidePrice = document.getElementById("sidePrice");
-const saltAmount = document.getElementById("saltAmount");
-const saltLine = document.getElementById("saltLine");
 const saltPrice = document.getElementById("saltPrice");
 const totalAmount = document.getElementById("totalAmount");
 
-// New customer/address fields
 const lastName = document.getElementById("lastName");
 const firstName = document.getElementById("firstName");
-const businessName = document.getElementById("businessName");  
+const businessName = document.getElementById("businessName");
 const customerEmail = document.getElementById("customerEmail");
 const customerPhone = document.getElementById("customerPhone");
 const street = document.getElementById("street");
@@ -494,86 +448,13 @@ const city = document.getElementById("city");
 const state = document.getElementById("state");
 const zip = document.getElementById("zip");
 const notes = document.getElementById("notes");
-  
+
+const copyBtn = document.getElementById("copyBtn");
+
+/* Helpers */
 function money(n){
-  return "$" + (n || 0).toFixed(2);
-}
-function formatDollarOrNA(val){
-  const n = parseFloat(val);
-  return isNaN(n) ? "N/A" : "$" + n.toFixed(2);
-}
-  
-function calc(){
-  const dMin = Number(driveMinutes.value||0);
-  const dRate = Number(driveRate.value||400);
-  const sMin = Number(sideMinutes.value||0);
-  const sRate = Number(sideRate.value||0);
-
-  const dCost = (dRate/60)*dMin;
-  const sCost = sMin*sRate;
-
-  let total = 0;
-  let salt = 0;
-
-if (saltAmount.value && saltAmount.value !== "N/A") {
-  salt = Number(saltAmount.value) || 0;
-  saltPrice.textContent = money(salt);
-  saltLine.style.display = "flex";
-} else {
-  saltPrice.textContent = "N/A";
-  saltLine.style.display = "flex";
-}
-  if(service.value==="both"){
-    total = dCost+sCost+salt;
-    driveLine.style.display="flex";
-    sideLine.style.display="flex";
-  }
-  if(service.value==="driveway"){
-    total = dCost+salt;
-    driveLine.style.display="flex";
-    sideLine.style.display="none";
-  }
-  if(service.value==="sidewalk"){
-    total = sCost+salt;
-    driveLine.style.display="none";
-    sideLine.style.display="flex";
-  }
-
-  drivePrice.textContent = money(dCost);
-  sidePrice.textContent = money(sCost);
-  totalAmount.textContent = money(total);
-
-  totalAmount.classList.remove("totalPulse");
-void totalAmount.offsetWidth;
-totalAmount.classList.add("totalPulse");
-  }
-
-[service,driveMinutes,driveRate,sideMinutes,sideRate,saltAmount].forEach(el=>{
-  el.addEventListener("input",calc);
-  el.addEventListener("change",calc);
-});
-
-function clearAll(){
-  lastName.value = "";
-  firstName.value = "";
-  businessName.value = "";
-  customerEmail.value = "";
-
-  // Clear phone (Safari sometimes auto-refills; this prevents it)
-  customerPhone.value = "";
-  customerPhone.blur();
-  setTimeout(() => { customerPhone.value = ""; }, 0);
-
-  street.value = "";
-  city.value = "Duluth";
-  state.value = "MN";
-  zip.value = "";
-  notes.value = "";
-  saltAmount.value = "";
-  saltPrice.textContent = "N/A";
-  driveMinutes.value = "";
-  sideMinutes.value = "";
-  calc();
+  const v = Number(n || 0);
+  return "$" + v.toFixed(2);
 }
 
 function formatCustomer(){
@@ -595,28 +476,36 @@ function formatAddress(){
   return [line1, line2].filter(Boolean).join("\n");
 }
 
-function emailQuote(){
-  const subject = `MN Plowing Quick Quote – ${formatCustomer()}`;
+function buildQuoteText(){
+  const cust = formatCustomer() || "—";
+  const biz = (businessName.value || "").trim() || "N/A";
+  const em = (customerEmail.value || "").trim() || "—";
+  const ph = (customerPhone.value || "").trim() || "—";
+  const addr = formatAddress() || "—";
+  const note = (notes.value || "").trim() || "—";
 
-const body =
-`Quick Quote Provided by
-MN Plowing llc
+  // Only include the service lines that are actually showing
+  const lines = [];
+  if (driveLine.style.display !== "none") lines.push(`Driveway: ${drivePrice.textContent}`);
+  if (sideLine.style.display !== "none") lines.push(`Sidewalk: ${sidePrice.textContent}`);
+  if (saltLine.style.display !== "none") lines.push(`Salting: ${saltPrice.textContent}`);
+  lines.push(`Total: ${totalAmount.textContent}`);
 
-Customer: ${formatCustomer()}
-Business: ${(businessName.value || "").trim() || "N/A"}
-Email: ${customerEmail.value || "—"}
-Phone: ${customerPhone.value || "—"}
+  return `Quick Quote Provided by
+MN Plowing LLC
+
+Customer: ${cust}
+Business: ${biz}
+Email: ${em}
+Phone: ${ph}
 
 Address:
-${formatAddress()}
+${addr}
 
 Notes:
-${(notes.value || "").trim() || "—"}
+${note}
 
-Driveway: ${drivePrice.textContent}
-Sidewalk: ${sidePrice.textContent}
-Salting: ${saltPrice.textContent}
-Total: ${totalAmount.textContent}
+${lines.join("\n")}
 
 Thank you for your interest in MN Plowing Snow Removal Services.
 
@@ -627,22 +516,132 @@ Phone: 218-349-3737
 Email: info@mnplowing.com
 
 We appreciate the opportunity to earn your business.`;
-  const cc = (customerEmail.value || "").trim();
-
-const mailto =
-  "mailto:info@mnplowing.com" +
-  "?subject=" + encodeURIComponent(subject) +
-  (cc ? "&cc=" + encodeURIComponent(cc) : "") +
-  "&body=" + encodeURIComponent(body);
-
-window.location.href = mailto;
 }
 
+/* Calculation */
+function calc(){
+  const dMin = Number(driveMinutes.value || 0);
+  const dRate = Number(driveRate.value || 400);
+  const sMin = Number(sideMinutes.value || 0);
+  const sRate = Number(sideRate.value || 0);
 
+  const dCost = (dRate/60) * dMin;
+  const sCost = sMin * sRate;
 
+  // Salting: optional, only counts if >0
+  const saltRaw = (saltAmount.value || "").trim();
+  const saltNum = parseFloat(saltRaw);
+
+  let salt = 0;
+  if (saltRaw !== "" && Number.isFinite(saltNum) && saltNum > 0) {
+    salt = saltNum;
+    saltPrice.textContent = money(salt);
+    saltLine.style.display = "flex";
+  } else {
+    saltPrice.textContent = money(0);
+    saltLine.style.display = "none";
+  }
+
+  // Service visibility + totals
+  let total = 0;
+
+  if(service.value === "both"){
+    driveLine.style.display = "flex";
+    sideLine.style.display = "flex";
+    total = dCost + sCost + salt;
+  } else if(service.value === "driveway"){
+    driveLine.style.display = "flex";
+    sideLine.style.display = "none";
+    total = dCost + salt;
+  } else { // sidewalk
+    driveLine.style.display = "none";
+    sideLine.style.display = "flex";
+    total = sCost + salt;
+  }
+
+  drivePrice.textContent = money(dCost);
+  sidePrice.textContent = money(sCost);
+  totalAmount.textContent = money(total);
+
+  // Pulse animation
+  totalAmount.classList.remove("totalPulse");
+  void totalAmount.offsetWidth;
+  totalAmount.classList.add("totalPulse");
+}
+
+/* Events */
+[service, driveMinutes, driveRate, sideMinutes, sideRate, saltAmount].forEach(el=>{
+  el.addEventListener("input", calc);
+  el.addEventListener("change", calc);
+});
+
+/* Actions */
+function clearAll(){
+  lastName.value = "";
+  firstName.value = "";
+  businessName.value = "";
+  customerEmail.value = "";
+
+  customerPhone.value = "";
+  customerPhone.blur();
+  setTimeout(() => { customerPhone.value = ""; }, 0);
+
+  street.value = "";
+  city.value = "Duluth";
+  state.value = "MN";
+  zip.value = "";
+  notes.value = "";
+  saltAmount.value = "";
+
+  calc();
+}
+
+function emailQuote(){
+  const subject = `MN Plowing Quick Quote – ${formatCustomer() || "Customer"}`;
+  const body = buildQuoteText();
+
+  const cc = (customerEmail.value || "").trim();
+
+  const mailto =
+    "mailto:info@mnplowing.com" +
+    "?subject=" + encodeURIComponent(subject) +
+    (cc ? "&cc=" + encodeURIComponent(cc) : "") +
+    "&body=" + encodeURIComponent(body);
+
+  window.location.href = mailto;
+}
+
+async function copyQuote(){
+  const text = buildQuoteText();
+
+  try{
+    await navigator.clipboard.writeText(text);
+
+    const original = copyBtn.textContent;
+    copyBtn.textContent = "Copied!";
+    setTimeout(() => { copyBtn.textContent = original; }, 1200);
+  } catch(e){
+    // Fallback for older browsers
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.left = "-9999px";
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+
+    const original = copyBtn.textContent;
+    copyBtn.textContent = "Copied!";
+    setTimeout(() => { copyBtn.textContent = original; }, 1200);
+  }
+}
+
+/* Init */
 calc();
 </script>
 
-</div>  
+</div>
 </body>
 </html>
