@@ -676,8 +676,9 @@ function calc(){
   let dCost = (dRate/60) * dMin;
   let sCost = sMin * sRate;
 
-  const saltNum = parseFloat((saltAmount.value || "").trim());
-  let saltCost = (Number.isFinite(saltNum) ? saltNum : 0);
+const saltClean = sanitizeCurrency(saltAmount.value);
+const saltNum = parseFloat(saltClean);
+let saltCost = (Number.isFinite(saltNum) ? saltNum : 0);
 
   if (enforceMinimums && enforceMinimums.checked) {
     const minPlowVal = Math.max(0, parseFloat(sanitizeCurrency(minPlow.value)) || 0);
