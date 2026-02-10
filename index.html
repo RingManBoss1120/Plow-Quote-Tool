@@ -60,7 +60,12 @@ body{
 @media (min-width: 900px){
   .customerGrid{
     grid-template-columns: 1fr 1fr;
+    gap:18px;
   }
+}
+
+.customerGrid .span2{
+  grid-column: 1 / -1;
 }
   
 .card{
