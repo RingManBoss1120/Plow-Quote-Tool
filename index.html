@@ -465,7 +465,11 @@ if (saltAmount.value && saltAmount.value !== "N/A") {
   drivePrice.textContent = money(dCost);
   sidePrice.textContent = money(sCost);
   totalAmount.textContent = money(total);
-}
+
+  totalAmount.classList.remove("totalPulse");
+void totalAmount.offsetWidth;
+totalAmount.classList.add("totalPulse");
+  }
 
 [service,driveMinutes,driveRate,sideMinutes,sideRate,saltAmount].forEach(el=>{
   el.addEventListener("input",calc);
