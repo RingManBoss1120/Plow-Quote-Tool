@@ -280,6 +280,25 @@ button.secondary{
 .customerGrid .span2{
   grid-column: 1 / -1;
 }
+  /* SALTING $ PREFIX FIX */
+.moneyInput {
+  position: relative;
+}
+
+.moneyInput .prefix {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(234,242,255,.85);
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.moneyInput input {
+  padding-left: 36px;
+}
+  
 </style>
 </head>
 
