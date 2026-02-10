@@ -190,6 +190,23 @@ button.secondary{
   letter-spacing:clamp(.5px, .8vw, 2px);
   line-height:1.1;
 }
+/* STEP 3A — 2-column customer grid (desktop), 1-column (phone) */
+.customerGrid{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:12px 14px;
+}
+
+@media (min-width: 900px){
+  .customerGrid{
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Make specific items span full width */
+.customerGrid .span2{
+  grid-column: 1 / -1;
+}
 </style>
 </head>
 
