@@ -518,6 +518,34 @@ Email: info@mnplowing.com
 We appreciate the opportunity to earn your business.`;
 }
 
+function buildCustomerQuoteText(){
+  const cust = formatCustomer() || "—";
+  const biz = (businessName.value || "").trim() || "N/A";
+  const addr = formatAddress() || "—";
+
+  // Only include the service lines that are actually showing
+  const lines = [];
+  if (driveLine.style.display !== "none") lines.push(`Driveway: ${drivePrice.textContent}`);
+  if (sideLine.style.display !== "none") lines.push(`Sidewalk: ${sidePrice.textContent}`);
+  if (saltLine.style.display !== "none") lines.push(`Salting: ${saltPrice.textContent}`);
+  lines.push(`Total: ${totalAmount.textContent}`);
+
+  return `MN Plowing LLC – Quick Quote
+
+Customer: ${cust}
+Business: ${biz}
+
+Service Address:
+${addr}
+
+${lines.join("\n")}
+
+If you’d like to move forward, reply to confirm service type and any special instructions.
+Nick Altiere – MN Plowing LLC
+218-349-3737
+info@mnplowing.com`;
+}
+  
 /* Calculation */
 function calc(){
   const dMin = Number(driveMinutes.value || 0);
@@ -612,7 +640,7 @@ function emailQuote(){
 }
 
 async function copyQuote(){
-  const text = buildQuoteText();
+  const text = buildCustomerQuoteText();
 
   try{
     await navigator.clipboard.writeText(text);
