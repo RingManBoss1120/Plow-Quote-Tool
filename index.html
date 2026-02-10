@@ -269,7 +269,10 @@ button.secondary{
     <input id="city" autocomplete="address-level2">
 
     <label>State</label>
-    <input id="state" autocomplete="address-level1">
+<select id="state">
+  <option value="MN" selected>MN</option>
+  <option value="WI">WI</option>
+</select>
 
     <label>Zip Code</label>
     <input id="zip" inputmode="numeric" autocomplete="postal-code">
@@ -454,7 +457,7 @@ function clearAll(){
 
   street.value = "";
   city.value = "";
-  state.value = "";
+  state.value = "MN";
   zip.value = "";
   notes.value = "";
   saltAmount.value = "";
