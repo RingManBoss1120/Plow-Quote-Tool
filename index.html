@@ -437,7 +437,7 @@ if (saltAmount.value && saltAmount.value !== "N/A") {
   totalAmount.textContent = money(total);
 }
 
-[service,driveMinutes,driveRate,sideMinutes,sideRate].forEach(el=>{
+[service,driveMinutes,driveRate,sideMinutes,sideRate,saltAmount].forEach(el=>{
   el.addEventListener("input",calc);
   el.addEventListener("change",calc);
 });
