@@ -542,7 +542,8 @@ function sanitizeCurrency(raw){
 }
 
 function roundToNearest5(value){
-  return Math.round(value / 5) * 5;
+  // epsilon reduces floating point edge cases
+  return Math.round((value + 1e-9) / 5) * 5;
 }
 
 function parseMoneyInput(inputEl){
